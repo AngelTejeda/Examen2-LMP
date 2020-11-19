@@ -1,0 +1,90 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="LMPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="matricula_alumno" />
+          </Key>
+          <Property Name="matricula_alumno" Type="int" Nullable="false" />
+          <Property Name="nombre_alumno" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="apellido_paterno_alumno" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="apellido_materno_alumno" Type="varchar" MaxLength="40" Nullable="false" />
+          <Property Name="direccion_alumno" Type="varchar(max)" Nullable="false" />
+          <Property Name="telefono_alumno" Type="varchar" MaxLength="10" Nullable="false" />
+          <Property Name="correo_alumno" Type="varchar" MaxLength="100" Nullable="false" />
+          <Property Name="carrera" Type="varchar" MaxLength="4" Nullable="false" />
+          <Property Name="semestre_alumno" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LMPModelStoreContainer">
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="LMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Alumno">
+          <Key>
+            <PropertyRef Name="matricula_alumno" />
+          </Key>
+          <Property Name="matricula_alumno" Type="Int32" Nullable="false" />
+          <Property Name="nombre_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellido_paterno_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="apellido_materno_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="direccion_alumno" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="telefono_alumno" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="correo_alumno" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="carrera" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="semestre_alumno" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="LMPEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Alumno" EntityType="Self.Alumno" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="LMPModelStoreContainer" CdmEntityContainer="LMPEntities">
+          <EntitySetMapping Name="Alumno">
+            <EntityTypeMapping TypeName="LMPModel.Alumno">
+              <MappingFragment StoreEntitySet="Alumno">
+                <ScalarProperty Name="matricula_alumno" ColumnName="matricula_alumno" />
+                <ScalarProperty Name="nombre_alumno" ColumnName="nombre_alumno" />
+                <ScalarProperty Name="apellido_paterno_alumno" ColumnName="apellido_paterno_alumno" />
+                <ScalarProperty Name="apellido_materno_alumno" ColumnName="apellido_materno_alumno" />
+                <ScalarProperty Name="direccion_alumno" ColumnName="direccion_alumno" />
+                <ScalarProperty Name="telefono_alumno" ColumnName="telefono_alumno" />
+                <ScalarProperty Name="correo_alumno" ColumnName="correo_alumno" />
+                <ScalarProperty Name="carrera" ColumnName="carrera" />
+                <ScalarProperty Name="semestre_alumno" ColumnName="semestre_alumno" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
