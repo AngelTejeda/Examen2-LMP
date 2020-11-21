@@ -75,6 +75,7 @@ namespace Examen2_LMP
                 Format.WriteLine("8. Carrera: " + (alumno.carrera == "" ? "----" : alumno.carrera.ToString()));
                 Format.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "----" : alumno.semestre_alumno.ToString()));
                 Format.WriteLine("---------------------");
+                Format.WriteLine("T. Insertar Datos de Prueba");
                 Format.WriteLine("R. Registrar Alumno");
                 Format.WriteLine("S. Salir");
                 Console.WriteLine();
@@ -86,54 +87,94 @@ namespace Examen2_LMP
                 switch (option)
                 {
                     case "1":
-                            alumno.matricula_alumno = Requests.RequestMatricula();
-                            fields[0] = true;
-                            break;
+                        alumno.matricula_alumno = Requests.RequestMatricula();
+                        fields[0] = true;
+                        break;
                     case "2":
-                            alumno.nombre_alumno = Requests.RequestNombre();
-                            fields[1] = true;
-                            break;
+                        alumno.nombre_alumno = Requests.RequestNombre();
+                        fields[1] = true;
+                        break;
                     case "3":
-                            alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno();
-                            fields[2] = true;
-                            break;
+                        alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno();
+                        fields[2] = true;
+                        break;
                     case "4":
-                            alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno();
-                            fields[3] = true;
-                            break;
+                        alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno();
+                        fields[3] = true;
+                        break;
                     case "5":
-                            alumno.direccion_alumno = Requests.RequestDireccion();
-                            fields[4] = true;
-                            break;
+                        alumno.direccion_alumno = Requests.RequestDireccion();
+                        fields[4] = true;
+                        break;
                     case "6":
-                            alumno.telefono_alumno = Requests.RequestTelefono();
-                            fields[5] = true;
-                            break;
+                        alumno.telefono_alumno = Requests.RequestTelefono();
+                        fields[5] = true;
+                        break;
                     case "7":
-                            alumno.correo_alumno = Requests.RequestCorreo();
-                            fields[6] = true;
-                            break;
+                        alumno.correo_alumno = Requests.RequestCorreo();
+                        fields[6] = true;
+                        break;
                     case "8":
-                            alumno.carrera = Requests.RequestCarrera();
-                            fields[7] = true;
-                            break;
+                        alumno.carrera = Requests.RequestCarrera();
+                        fields[7] = true;
+                        break;
                     case "9":
-                            alumno.semestre_alumno = Requests.RequestSemestre();
-                            fields[8] = true;
-                            break;
+                        alumno.semestre_alumno = Requests.RequestSemestre();
+                        fields[8] = true;
+                        break;
+                    case "t":
+                    case "T":
+                        alumno = new AlumnoSC().GenerateRandomAlumno();
+
+                        for(int i=0; i<9; i++)
+                        {
+                            fields[i] = true;
+                        }
+
+                        break;
                     case "r":
                     case "R":
-                            Console.Clear();
-                            Console.WriteLine();
-                            if (fields.Contains(false))
-                                Format.ShowMessage("Debe ingresar todos los campos primero.");
-                            else
-                            {
+                        Console.Clear();
+                        Console.WriteLine();
+                        if (fields.Contains(false))
+                            Format.ShowMessage("Debe ingresar todos los campos primero.");
+                        else
+                        {
+                            string confirm = Requests.AskForConfirmation(
+                                "---Datos del Alumno---",
+                                "",
+                                "Matrícula: " + alumno.matricula_alumno,
+                                "Nombre: " + alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno,
+                                "Dirección: " + alumno.direccion_alumno,
+                                "Teléfono: " + alumno.telefono_alumno,
+                                "Correo: " + alumno.correo_alumno,
+                                "Carrera: " + alumno.carrera,
+                                "Semestre: " + alumno.semestre_alumno,
+                                "",
+                                "¿Desea registrar a este alumno?"
+                                );
+
+                            if(confirm == "S") {
+                                Console.WriteLine();
                                 if(new AlumnoSC().AddAlumno(alumno))
                                     option = "S";
                             }
-                            break;
-                    case "s": case "S": option = "S";  break;
+                        }
+                        break;
+                    case "s":
+                    case "S":
+                        if (fields.Contains(true))
+                        {
+                            string exit = Requests.AskForConfirmation("Se perderán los datos ingresados.", "¿Desea Salir?");
+
+                            if (exit == "N")
+                                option = "Don't Break";
+                            else
+                                option = "S";
+                        }
+                        else
+                            option = "S";
+                        break;
                     default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "S");
@@ -150,8 +191,10 @@ namespace Examen2_LMP
                 Console.WriteLine();
                 Format.WriteLine("1. Salir");
 
+                Console.WriteLine();
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
+                Console.WriteLine();
 
                 switch (option)
                 {
@@ -172,8 +215,10 @@ namespace Examen2_LMP
                 Format.DrawBox("Menú de Cambios");
                 Format.WriteLine("1. Salir");
 
+                Console.WriteLine();
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
+                Console.WriteLine();
 
                 switch (option)
                 {
@@ -194,8 +239,10 @@ namespace Examen2_LMP
                 Format.DrawBox("Menú de Consultas");
                 Format.WriteLine("1. Salir");
 
+                Console.WriteLine();
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
+                Console.WriteLine();
 
                 switch (option)
                 {
