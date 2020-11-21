@@ -6,9 +6,14 @@ namespace Examen2_LMP.Backend
 {
     class AlumnoSC : BaseSC
     {
-        public IQueryable<Alumno> getAllAlumnos()
+        public IQueryable<Alumno> GetAllAlumnos()
         {
             return dbContext.Alumno;
+        }
+
+        public Alumno GetAlumnoWithMatricula(int matricula)
+        {
+            return GetAllAlumnos().FirstOrDefault(a => a.matricula_alumno == matricula);
         }
 
         //Altas
@@ -19,9 +24,8 @@ namespace Examen2_LMP.Backend
                 dbContext.Alumno.Add(newAlumno);
                 dbContext.SaveChanges();
             }
-            catch(Exception e)
+            catch(Exception)
             {
-                Console.WriteLine(e.Message);
                 Utilities.ShowMessage("No se ha podido registrar al alumno.");
 
                 return false;
