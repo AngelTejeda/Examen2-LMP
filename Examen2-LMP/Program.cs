@@ -49,19 +49,27 @@ namespace Examen2_LMP
             string option;
             bool[] fields = new bool[9];
 
+            alumno.nombre_alumno = "";
+            alumno.apellido_paterno_alumno = "";
+            alumno.apellido_materno_alumno = "";
+            alumno.direccion_alumno = "";
+            alumno.telefono_alumno = "";
+            alumno.correo_alumno = "";
+            alumno.carrera = "";
+
             do
             {
                 Console.Clear();
                 Console.WriteLine("Datos del Nuevo Alumno");
-                Console.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "" : alumno.matricula_alumno.ToString()));
-                Console.WriteLine("2. Nombre: " + alumno.nombre_alumno);
-                Console.WriteLine("3. Apellido Paterno: " + alumno.apellido_paterno_alumno);
-                Console.WriteLine("4. Apellido Materno: " + alumno.apellido_materno_alumno);
-                Console.WriteLine("5. Dirección: " + alumno.direccion_alumno);
-                Console.WriteLine("6. Teléfono: " + alumno.telefono_alumno);
-                Console.WriteLine("7. Correo: " + alumno.correo_alumno);
-                Console.WriteLine("8. Carrera: " + alumno.carrera);
-                Console.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "" : alumno.semestre_alumno.ToString()));
+                Console.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "----" : alumno.matricula_alumno.ToString()));
+                Console.WriteLine("2. Nombre: " + (alumno.nombre_alumno == "" ? "----" : alumno.nombre_alumno.ToString()));
+                Console.WriteLine("3. Apellido Paterno: " + (alumno.apellido_paterno_alumno == "" ? "----" : alumno.apellido_paterno_alumno.ToString()));
+                Console.WriteLine("4. Apellido Materno: " + (alumno.apellido_materno_alumno == "" ? "----" : alumno.apellido_materno_alumno.ToString()));
+                Console.WriteLine("5. Dirección: " + (alumno.direccion_alumno == "" ? "----" : alumno.direccion_alumno.ToString()));
+                Console.WriteLine("6. Teléfono: " + (alumno.telefono_alumno == "" ? "----" : alumno.telefono_alumno.ToString()));
+                Console.WriteLine("7. Correo: " + (alumno.correo_alumno == "" ? "----" : alumno.correo_alumno.ToString()));
+                Console.WriteLine("8. Carrera: " + (alumno.carrera == "" ? "----" : alumno.carrera.ToString()));
+                Console.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "----" : alumno.semestre_alumno.ToString()));
                 Console.WriteLine("10. Registrar Alumno");
                 Console.WriteLine("11. Salir");
 
@@ -132,7 +140,7 @@ namespace Examen2_LMP
                                 Utilities.ShowMessage("Debe ingresar todos los campos primero.");
                             else
                             {
-                                if(new AlumnoSC().addAlumno(alumno))
+                                if(new AlumnoSC().AddAlumno(alumno))
                                     option = "11";
                             }
                             break;
