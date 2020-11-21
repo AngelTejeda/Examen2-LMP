@@ -29,6 +29,7 @@ namespace Examen2_LMP
 
                 Console.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
+                Console.WriteLine();
                 
                 switch(option)
                 {
@@ -45,126 +46,101 @@ namespace Examen2_LMP
         public static void MenuAlta()
         {
             Alumno alumno = new Alumno();
+            string option;
+            bool[] fields = new bool[9];
 
-            Func<string, bool> lambda = str => str.Equals("");
+            do
+            {
+                Console.Clear();
+                Console.WriteLine("Datos del Nuevo Alumno");
+                Console.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "" : alumno.matricula_alumno.ToString()));
+                Console.WriteLine("2. Nombre: " + alumno.nombre_alumno);
+                Console.WriteLine("3. Apellido Paterno: " + alumno.apellido_paterno_alumno);
+                Console.WriteLine("4. Apellido Materno: " + alumno.apellido_materno_alumno);
+                Console.WriteLine("5. Dirección: " + alumno.direccion_alumno);
+                Console.WriteLine("6. Teléfono: " + alumno.telefono_alumno);
+                Console.WriteLine("7. Correo: " + alumno.correo_alumno);
+                Console.WriteLine("8. Carrera: " + alumno.carrera);
+                Console.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "" : alumno.semestre_alumno.ToString()));
+                Console.WriteLine("10. Registrar Alumno");
+                Console.WriteLine("11. Salir");
 
-            alumno.matricula_alumno = int.Parse( Utilities.RequestField(
-                "Ingrese la matrícula (7 dígitos): ",
-                str =>
+                Console.Write("Ingrese una opción: ");
+                option = Console.ReadLine();
+                Console.WriteLine();
+
+                switch (option)
                 {
-                    if(!int.TryParse(str, out int i))
-                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
-                    if (str.Length != 7)
-                        throw new Exception("La longitud de la matrícula debe ser igual a 7.");
-                    if (new AlumnoSC().GetAlumnoWithMatricula(int.Parse(str)) != null)
-                        throw new Exception("Ya existe un alumno con esa matrícula.");
-
-                    return true;
+                    case "1":
+                        {
+                            alumno.matricula_alumno = Utilities.RequestMatricula();
+                            fields[0] = true;
+                            break;
+                        }
+                    case "2":
+                        {
+                            alumno.nombre_alumno = Utilities.RequestNonEmptyString("el o los nombres del alumno");
+                            fields[1] = true;
+                            break;
+                        }
+                    case "3":
+                        {
+                            alumno.apellido_paterno_alumno = Utilities.RequestNonEmptyString("el apellido paterno del alumno");
+                            fields[2] = true;
+                            break;
+                        }
+                    case "4":
+                        {
+                            alumno.apellido_materno_alumno = Utilities.RequestNonEmptyString("el apellido materno del alumno");
+                            fields[3] = true;
+                            break;
+                        }
+                    case "5":
+                        {
+                            alumno.direccion_alumno = Utilities.RequestNonEmptyString("la dirección del alumno");
+                            fields[4] = true;
+                            break;
+                        }
+                    case "6":
+                        {
+                            alumno.telefono_alumno = Utilities.RequestTelefono();
+                            fields[5] = true;
+                            break;
+                        }
+                    case "7":
+                        {
+                            alumno.correo_alumno = Utilities.RequestCorreo();
+                            fields[6] = true;
+                            break;
+                        }
+                    case "8":
+                        {
+                            alumno.carrera = Utilities.RequestCarrera();
+                            fields[7] = true;
+                            break;
+                        }
+                    case "9":
+                        {
+                            alumno.semestre_alumno = Utilities.RequestSemestre();
+                            fields[8] = true;
+                            break;
+                        }
+                    case "10":
+                        {
+                            Console.Clear();
+                            if (fields.Contains(false))
+                                Utilities.ShowMessage("Debe ingresar todos los campos primero.");
+                            else
+                            {
+                                if(new AlumnoSC().addAlumno(alumno))
+                                    option = "11";
+                            }
+                            break;
+                        }
+                    case "11": break;
+                    default: Utilities.ShowMessage("Opción Inválida"); break;
                 }
-                ) );
-
-            alumno.nombre_alumno = Utilities.RequestField(
-                "Ingrese el o los nombres del alumno: ",
-                str =>
-                {
-                    if(str.Length == 0)
-                        throw new Exception("Debe ingresar una cadena no vacía.");
-
-                    return true;
-                }
-                );
-
-            alumno.apellido_paterno_alumno = Utilities.RequestField(
-                "Ingrese el apellido paterno del alumno: ",
-                str =>
-                {
-                    if (str.Length == 0)
-                        throw new Exception("Debe ingresar una cadena no vacía.");
-
-                    return true;
-                }
-                );
-
-            alumno.apellido_materno_alumno = Utilities.RequestField(
-                "Ingrese el apellido materno del alumno: ",
-                str =>
-                {
-                    if (str.Length == 0)
-                        throw new Exception("Debe ingresar una cadena no vacía.");
-
-                    return true;
-                }
-                );
-
-            alumno.direccion_alumno = Utilities.RequestField(
-                "Ingrese la dirección del alumno: ",
-                str =>
-                {
-                    if (str.Length == 0)
-                        throw new Exception("Debe ingresar una cadena no vacía.");
-
-                    return true;
-                }
-                );
-
-            alumno.telefono_alumno = Utilities.RequestField(
-                "Ingrese el teléfono del alumno (10 dígitos): ",
-                str =>
-                {
-                    if(!int.TryParse(str, out int i))
-                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
-                    if (str.Length != 10)
-                        throw new Exception("Debe ingresar 10 dígitos.");
-
-                    return true;
-                }
-                );
-
-            alumno.correo_alumno = Utilities.RequestField(
-                "Ingrese el correo del alumno (contiene @ y termina con '.com'): ",
-                str =>
-                {
-                    if (!str.Contains("@"))
-                        throw new Exception("El correo debe contener '@'.");
-                    if (!str.EndsWith(".com"))
-                        throw new Exception("El correo debe terminar con '.com'.");
-                    if(new AlumnoSC().GetAllAlumnos().FirstOrDefault(a => a.correo_alumno == str) != null)
-                        throw new Exception("El correo ingresado ya está registrado.");
-
-                    return true;
-                }
-                );
-
-            alumno.carrera = Utilities.RequestField(
-                "Opciones de Carrera: LCC, LSTI, LM, LF, LMAD, LA\nIngrese la carrera del alumno: ",
-                str =>
-                {
-                    string[] carrera = { "LCC", "LSTI", "LM", "LF", "LMAD", "LA" };
-
-                    str = str.ToUpper();
-                    if (!carrera.Contains(str))
-                        throw new Exception("Ingresó una carrera no válida.");
-
-                    return true;
-                }
-                );
-
-            alumno.semestre_alumno = int.Parse( Utilities.RequestField(
-                "Ingrese el semestre que está cursando el alumno (1-9): ",
-                str =>
-                {
-                    int semestre;
-
-                    if (!int.TryParse(str, out semestre))
-                        throw new Exception("Debe ingresar un valor numérico.");
-                    if (semestre < 1 || semestre > 9)
-                        throw new Exception("Debe ingresar un número entre 1 y 9.");
-
-                    return true;
-                }
-                ));
-
-            new AlumnoSC().addAlumno(alumno);
+            } while (option != "11");
         }
 
         public static void MenuBaja()
