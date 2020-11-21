@@ -79,25 +79,25 @@ namespace Examen2_LMP
                         }
                     case "2":
                         {
-                            alumno.nombre_alumno = Utilities.RequestNonEmptyString("el o los nombres del alumno");
+                            alumno.nombre_alumno = Utilities.RequestNombre();
                             fields[1] = true;
                             break;
                         }
                     case "3":
                         {
-                            alumno.apellido_paterno_alumno = Utilities.RequestNonEmptyString("el apellido paterno del alumno");
+                            alumno.apellido_paterno_alumno = Utilities.RequestApellidoPaterno();
                             fields[2] = true;
                             break;
                         }
                     case "4":
                         {
-                            alumno.apellido_materno_alumno = Utilities.RequestNonEmptyString("el apellido materno del alumno");
+                            alumno.apellido_materno_alumno = Utilities.RequestApellidoMaterno();
                             fields[3] = true;
                             break;
                         }
                     case "5":
                         {
-                            alumno.direccion_alumno = Utilities.RequestNonEmptyString("la dirección del alumno");
+                            alumno.direccion_alumno = Utilities.RequestDireccion();
                             fields[4] = true;
                             break;
                         }

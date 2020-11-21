@@ -75,6 +75,26 @@ namespace Examen2_LMP
                 );
         }
 
+        public static string RequestNombre()
+        {
+            return RequestNonEmptyString("el o los nombres del alumno");
+        }
+
+        public static string RequestApellidoPaterno()
+        {
+            return RequestNonEmptyString("el apellido paterno del alumno");
+        }
+
+        public static string RequestApellidoMaterno()
+        {
+            return RequestNonEmptyString("el apellido materno del alumno");
+        }
+
+        public static string RequestDireccion()
+        {
+            return RequestNonEmptyString("la dirección del alumno");
+        }
+
         public static string RequestTelefono()
         {
             return RequestField(
