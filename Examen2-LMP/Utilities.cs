@@ -55,12 +55,32 @@ namespace Utilities
 
     class Requests
     {
+        public static string AskForConfirmation(params string[] texts)
+        {
+            string option;
+
+            do
+            {
+                Console.Clear();
+                Console.WriteLine();
+                Format.DrawBox(texts);
+                Console.WriteLine();
+
+                Format.Write("(S/N): ");
+                option = Console.ReadLine();
+
+                option = option.ToUpper();
+            } while (option != "S" && option!= "N");
+
+            return option;
+        }
         public static string RequestField(string requestMessage, Func<string, bool> lambda)
         {
             string field;
             do
             {
                 Console.Clear();
+                Console.WriteLine();
                 Format.Write(requestMessage);
                 field = Console.ReadLine();
                 Console.WriteLine();
