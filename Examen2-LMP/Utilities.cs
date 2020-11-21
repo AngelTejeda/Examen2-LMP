@@ -1,9 +1,6 @@
 ﻿using Examen2_LMP.Backend;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Examen2_LMP
 {
@@ -39,7 +36,7 @@ namespace Examen2_LMP
                 }
                 
             } while (true);
-
+            
             return field;
         }
 
