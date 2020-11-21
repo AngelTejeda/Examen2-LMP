@@ -16,20 +16,27 @@ namespace Utilities
             Console.Write("   " + text);
         }
 
-        public static void DrawBox(string text)
+        public static void DrawBox(params string[] texts)
         {
+            int maxLength = texts.Max(t => t.Length);
+
             Console.Write("        ");
-            for (int i = 0; i < text.Length + 2; i++)
+            for (int i = 0; i < maxLength + 4; i++)
             {
                 Console.Write("-");
             }
             Console.WriteLine();
 
-            Console.Write("        ");
-            Console.WriteLine("|" + text + "|");
+            foreach(string text in texts) { 
+                Console.Write("        ");
+                Console.Write("| " + text);
+                for (int i = 0; i < maxLength - text.Length; i++)
+                    Console.Write(" ");
+                Console.WriteLine(" |");
+            }
 
             Console.Write("        ");
-            for (int i = 0; i < text.Length + 2; i++)
+            for (int i = 0; i < maxLength + 4; i++)
             {
                 Console.Write("-");
             }
@@ -38,8 +45,10 @@ namespace Utilities
 
         public static void ShowMessage(string message)
         {
-            WriteLine(message + "\n");
-            WriteLine("Presione Enter para continuar...");
+            DrawBox(
+                message,
+                "Presione Enter para continuar..."
+                );
             Console.ReadLine();
         }
     }
