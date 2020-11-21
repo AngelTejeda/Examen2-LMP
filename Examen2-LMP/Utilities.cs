@@ -15,7 +15,7 @@ namespace Examen2_LMP
             Console.ReadLine();
         }
 
-        public static string RequestField(string requestMessage, string errorMessage, Func<string, bool> lambda)
+        public static string RequestField(string requestMessage, Func<string, bool> lambda)
         {
             string field;
             do
@@ -24,12 +24,18 @@ namespace Examen2_LMP
                 Console.Write(requestMessage);
                 field = Console.ReadLine();
 
-                if (lambda == null)
-                    break;
-                else if (lambda(field))
-                    break;
-                else
-                    ShowMessage(errorMessage);
+                try
+                {
+                    if (lambda == null)
+                        break;
+                    else if (lambda(field))
+                        break;
+                }
+                catch (Exception e)
+                {
+                    ShowMessage(e.Message);
+                }
+                
             } while (true);
 
             return field;
