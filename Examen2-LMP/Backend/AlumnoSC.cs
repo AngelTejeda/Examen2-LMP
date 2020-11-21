@@ -1,6 +1,7 @@
 ﻿using Examen2_LMP.DataAccess;
 using System;
 using System.Linq;
+using Utilities;
 
 namespace Examen2_LMP.Backend
 {
@@ -16,12 +17,12 @@ namespace Examen2_LMP.Backend
             }
             catch(Exception)
             {
-                Utilities.ShowMessage("Se ha producido un error. No se ha podido registrar al alumno.");
+                Format.ShowMessage("Se ha producido un error. No se ha podido registrar al alumno.");
 
                 return false;
             }
 
-            Utilities.ShowMessage("Se ha registrado al alumno con éxito.");
+            Format.ShowMessage("Se ha registrado al alumno con éxito.");
             return true;
         }
         //Bajas
@@ -34,12 +35,12 @@ namespace Examen2_LMP.Backend
             }
             catch (Exception)
             {
-                Utilities.ShowMessage("Se ha producido un error. No se ha podido eliminar al alumno.");
+                Format.ShowMessage("Se ha producido un error. No se ha podido eliminar al alumno.");
 
                 return false;
             }
 
-            Utilities.ShowMessage("Se ha eliminado al alumno con éxito.");
+            Format.ShowMessage("Se ha eliminado al alumno con éxito.");
             return true;
         }
 

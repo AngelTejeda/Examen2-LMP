@@ -2,6 +2,7 @@
 using Examen2_LMP.DataAccess;
 using System;
 using System.Linq;
+using Utilities;
 
 namespace Examen2_LMP
 {
@@ -9,9 +10,7 @@ namespace Examen2_LMP
     {
         static void Main(string[] args)
         {
-
             Menu();
-
         }
 
         public static void Menu()
@@ -20,14 +19,17 @@ namespace Examen2_LMP
             do
             {
                 Console.Clear();
-                Console.WriteLine("Menú");
-                Console.WriteLine("1. Alta");
-                Console.WriteLine("2. Baja");
-                Console.WriteLine("3. Cambios");
-                Console.WriteLine("4. Consultas");
-                Console.WriteLine("5. Salir");
+                Console.WriteLine();
+                Format.DrawBox("Menú");
+                Console.WriteLine();
+                Format.WriteLine("1. Alta");
+                Format.WriteLine("2. Baja");
+                Format.WriteLine("3. Cambios");
+                Format.WriteLine("4. Consultas");
+                Format.WriteLine("5. Salir");
+                Console.WriteLine();
 
-                Console.Write("Ingrese una opción: ");
+                Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
                 
@@ -38,7 +40,7 @@ namespace Examen2_LMP
                     case "3": MenuCambios(); break;
                     case "4": MenuConsultas(); break;
                     case "5": break;
-                    default: Utilities.ShowMessage("Opción Inválida"); break;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "5");
         }
@@ -60,95 +62,81 @@ namespace Examen2_LMP
             do
             {
                 Console.Clear();
-                Console.WriteLine("Datos del Nuevo Alumno");
-                Console.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "----" : alumno.matricula_alumno.ToString()));
-                Console.WriteLine("2. Nombre: " + (alumno.nombre_alumno == "" ? "----" : alumno.nombre_alumno.ToString()));
-                Console.WriteLine("3. Apellido Paterno: " + (alumno.apellido_paterno_alumno == "" ? "----" : alumno.apellido_paterno_alumno.ToString()));
-                Console.WriteLine("4. Apellido Materno: " + (alumno.apellido_materno_alumno == "" ? "----" : alumno.apellido_materno_alumno.ToString()));
-                Console.WriteLine("5. Dirección: " + (alumno.direccion_alumno == "" ? "----" : alumno.direccion_alumno.ToString()));
-                Console.WriteLine("6. Teléfono: " + (alumno.telefono_alumno == "" ? "----" : alumno.telefono_alumno.ToString()));
-                Console.WriteLine("7. Correo: " + (alumno.correo_alumno == "" ? "----" : alumno.correo_alumno.ToString()));
-                Console.WriteLine("8. Carrera: " + (alumno.carrera == "" ? "----" : alumno.carrera.ToString()));
-                Console.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "----" : alumno.semestre_alumno.ToString()));
-                Console.WriteLine("10. Registrar Alumno");
-                Console.WriteLine("11. Salir");
+                Console.WriteLine();
+                Format.DrawBox("Datos del Nuevo Alumno");
+                Console.WriteLine();
+                Format.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "----" : alumno.matricula_alumno.ToString()));
+                Format.WriteLine("2. Nombre: " + (alumno.nombre_alumno == "" ? "----" : alumno.nombre_alumno.ToString()));
+                Format.WriteLine("3. Apellido Paterno: " + (alumno.apellido_paterno_alumno == "" ? "----" : alumno.apellido_paterno_alumno.ToString()));
+                Format.WriteLine("4. Apellido Materno: " + (alumno.apellido_materno_alumno == "" ? "----" : alumno.apellido_materno_alumno.ToString()));
+                Format.WriteLine("5. Dirección: " + (alumno.direccion_alumno == "" ? "----" : alumno.direccion_alumno.ToString()));
+                Format.WriteLine("6. Teléfono: " + (alumno.telefono_alumno == "" ? "----" : alumno.telefono_alumno.ToString()));
+                Format.WriteLine("7. Correo: " + (alumno.correo_alumno == "" ? "----" : alumno.correo_alumno.ToString()));
+                Format.WriteLine("8. Carrera: " + (alumno.carrera == "" ? "----" : alumno.carrera.ToString()));
+                Format.WriteLine("9. Semestre: " + (alumno.semestre_alumno == 0 ? "----" : alumno.semestre_alumno.ToString()));
+                Format.WriteLine("---------------------");
+                Format.WriteLine("R. Registrar Alumno");
+                Format.WriteLine("S. Salir");
+                Console.WriteLine();
 
-                Console.Write("Ingrese una opción: ");
+                Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
 
                 switch (option)
                 {
                     case "1":
-                        {
-                            alumno.matricula_alumno = Utilities.RequestMatricula();
+                            alumno.matricula_alumno = Requests.RequestMatricula();
                             fields[0] = true;
                             break;
-                        }
                     case "2":
-                        {
-                            alumno.nombre_alumno = Utilities.RequestNombre();
+                            alumno.nombre_alumno = Requests.RequestNombre();
                             fields[1] = true;
                             break;
-                        }
                     case "3":
-                        {
-                            alumno.apellido_paterno_alumno = Utilities.RequestApellidoPaterno();
+                            alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno();
                             fields[2] = true;
                             break;
-                        }
                     case "4":
-                        {
-                            alumno.apellido_materno_alumno = Utilities.RequestApellidoMaterno();
+                            alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno();
                             fields[3] = true;
                             break;
-                        }
                     case "5":
-                        {
-                            alumno.direccion_alumno = Utilities.RequestDireccion();
+                            alumno.direccion_alumno = Requests.RequestDireccion();
                             fields[4] = true;
                             break;
-                        }
                     case "6":
-                        {
-                            alumno.telefono_alumno = Utilities.RequestTelefono();
+                            alumno.telefono_alumno = Requests.RequestTelefono();
                             fields[5] = true;
                             break;
-                        }
                     case "7":
-                        {
-                            alumno.correo_alumno = Utilities.RequestCorreo();
+                            alumno.correo_alumno = Requests.RequestCorreo();
                             fields[6] = true;
                             break;
-                        }
                     case "8":
-                        {
-                            alumno.carrera = Utilities.RequestCarrera();
+                            alumno.carrera = Requests.RequestCarrera();
                             fields[7] = true;
                             break;
-                        }
                     case "9":
-                        {
-                            alumno.semestre_alumno = Utilities.RequestSemestre();
+                            alumno.semestre_alumno = Requests.RequestSemestre();
                             fields[8] = true;
                             break;
-                        }
-                    case "10":
-                        {
+                    case "r":
+                    case "R":
                             Console.Clear();
+                            Console.WriteLine();
                             if (fields.Contains(false))
-                                Utilities.ShowMessage("Debe ingresar todos los campos primero.");
+                                Format.ShowMessage("Debe ingresar todos los campos primero.");
                             else
                             {
                                 if(new AlumnoSC().AddAlumno(alumno))
-                                    option = "11";
+                                    option = "S";
                             }
                             break;
-                        }
-                    case "11": break;
-                    default: Utilities.ShowMessage("Opción Inválida"); break;
+                    case "s": case "S": option = "S";  break;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
-            } while (option != "11");
+            } while (option != "S");
         }
 
         public static void MenuBaja()
@@ -157,16 +145,18 @@ namespace Examen2_LMP
             do
             {
                 Console.Clear();
-                Console.WriteLine("Menú de Baja");
-                Console.WriteLine("1. Salir");
+                Console.WriteLine();
+                Format.DrawBox("Menú de Baja");
+                Console.WriteLine();
+                Format.WriteLine("1. Salir");
 
-                Console.Write("Ingrese una opción: ");
+                Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
 
                 switch (option)
                 {
                     case "1": break;
-                    default: Utilities.ShowMessage("Opción Inválida"); break;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "1");
         }
@@ -177,16 +167,18 @@ namespace Examen2_LMP
             do
             {
                 Console.Clear();
-                Console.WriteLine("Menú de Cambios");
-                Console.WriteLine("1. Salir");
+                Console.WriteLine();
+                Console.WriteLine();
+                Format.DrawBox("Menú de Cambios");
+                Format.WriteLine("1. Salir");
 
-                Console.Write("Ingrese una opción: ");
+                Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
 
                 switch (option)
                 {
                     case "1": break;
-                    default: Utilities.ShowMessage("Opción Inválida"); break;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "1");
         }
@@ -197,16 +189,18 @@ namespace Examen2_LMP
             do
             {
                 Console.Clear();
-                Console.WriteLine("Menú de Consultas");
-                Console.WriteLine("1. Salir");
+                Console.WriteLine();
+                Console.WriteLine();
+                Format.DrawBox("Menú de Consultas");
+                Format.WriteLine("1. Salir");
 
-                Console.Write("Ingrese una opción: ");
+                Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
 
                 switch (option)
                 {
                     case "1": break;
-                    default: Utilities.ShowMessage("Opción Inválida"); break;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "1");
         }

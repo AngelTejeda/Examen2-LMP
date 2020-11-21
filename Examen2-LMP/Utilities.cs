@@ -2,24 +2,57 @@
 using System;
 using System.Linq;
 
-namespace Examen2_LMP
+namespace Utilities
 {
-    class Utilities
+    class Format
     {
-        public static void ShowMessage(string message)
+        public static void WriteLine(string text)
         {
-            Console.WriteLine(message + "\n");
-            Console.WriteLine("Presione Enter para continuar...");
-            Console.ReadLine();
+            Write(text + "\n");
         }
 
+        public static void Write(string text)
+        {
+            Console.Write("   " + text);
+        }
+
+        public static void DrawBox(string text)
+        {
+            Console.Write("        ");
+            for (int i = 0; i < text.Length + 2; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+
+            Console.Write("        ");
+            Console.WriteLine("|" + text + "|");
+
+            Console.Write("        ");
+            for (int i = 0; i < text.Length + 2; i++)
+            {
+                Console.Write("-");
+            }
+            Console.WriteLine();
+        }
+
+        public static void ShowMessage(string message)
+        {
+            WriteLine(message + "\n");
+            WriteLine("Presione Enter para continuar...");
+            Console.ReadLine();
+        }
+    }
+
+    class Requests
+    {
         public static string RequestField(string requestMessage, Func<string, bool> lambda)
         {
             string field;
             do
             {
                 Console.Clear();
-                Console.Write(requestMessage);
+                Format.Write(requestMessage);
                 field = Console.ReadLine();
                 Console.WriteLine();
 
@@ -32,7 +65,7 @@ namespace Examen2_LMP
                 }
                 catch (Exception e)
                 {
-                    ShowMessage(e.Message);
+                    Format.ShowMessage(e.Message);
                 }
                 
             } while (true);
