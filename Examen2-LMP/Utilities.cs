@@ -80,6 +80,7 @@ namespace Utilities
         public static string RequestField(string requestMessage, Func<string, bool> lambda, string title = "")
         {
             string field;
+
             do
             {
                 Console.Clear();
@@ -231,6 +232,23 @@ namespace Utilities
                 },
                 title: "Semestre"
                 ));
+        }
+        
+        public static string RequestApellidos()
+        {
+            return RequestField(
+                "Ingrese los apellidos del alumno: ",
+                str =>
+                {
+                    if (str.Trim().Equals(""))
+                        throw new Exception("Debe ingresar una cadena no vacía.");
+                    if (str.Split(' ').Length < 2)
+                        throw new Exception("Debe ingresar los dos apellidos.");
+
+                    return true;
+                },
+                title: "Búscar Alumno"
+                );
         }
     }
 }

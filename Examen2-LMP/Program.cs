@@ -264,7 +264,7 @@ namespace Examen2_LMP
             } while (option != "1");
         }
         
-        public static List<Alumno> GetAlumnosByApellidos()
+        public static List<Alumno> GetListOfAlumosByApellidos()
         {
             List<Alumno> alumnos;
 
@@ -272,19 +272,7 @@ namespace Examen2_LMP
             {
                 string apellidos;
 
-                apellidos = Requests.RequestField(
-                    "Ingrese los apellidos del alumno: ",
-                    str =>
-                    {
-                        if (str.Trim().Equals(""))
-                            throw new Exception("Debe ingresar una cadena no vacía.");
-                        if (str.Split(' ').Length < 2)
-                            throw new Exception("Debe ingresar los dos apellidos.");
-
-                        return true;
-                    },
-                    title: "Búscar Alumno"
-                    );
+                apellidos = Requests.RequestApellidos();
 
                 alumnos = new AlumnoSC()
                     .GetAlumnosByApellido(apellidos)
@@ -307,7 +295,7 @@ namespace Examen2_LMP
             } while (true);
         }
 
-        public static Alumno MenuSelectAlumno(List<Alumno> alumnos)
+        public static Alumno SelectAlumnoFromList(List<Alumno> alumnos)
         {
             int alumnosPorPagina = 2;
             int pos = 0;
@@ -341,9 +329,9 @@ namespace Examen2_LMP
 
                 Format.WriteLine("----------");
                 if (pos > 0)
-                    Format.WriteLine("A: Página Anterior");
+                    Format.WriteLine("A: Anterior Página");
                 if (pos + alumnosPorPagina < alumnos.Count)
-                    Format.WriteLine("S: Página Siguiente");
+                    Format.WriteLine("S: Siguiente Página");
                 Format.WriteLine("R: Regresar");
                 Console.WriteLine();
 
@@ -383,12 +371,12 @@ namespace Examen2_LMP
 
         public static Alumno SelectAlumno()
         {
-            List<Alumno> alumnos = GetAlumnosByApellidos();
+            List<Alumno> alumnos = GetListOfAlumosByApellidos();
 
             if (alumnos == null)
                 return null;
 
-            return MenuSelectAlumno(alumnos);
+            return SelectAlumnoFromList(alumnos);
         }
     }
 }
