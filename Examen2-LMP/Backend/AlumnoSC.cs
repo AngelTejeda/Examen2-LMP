@@ -57,6 +57,11 @@ namespace Examen2_LMP.Backend
             return GetAllAlumnos().FirstOrDefault(a => a.matricula_alumno == matricula);
         }
 
+        public IQueryable<Alumno> GetAlumnosByApellido(string apellidos)
+        {
+            return GetAllAlumnos().Where(a => a.apellido_paterno_alumno.ToLower() + " " + a.apellido_materno_alumno.ToLower() == apellidos.ToLower());
+        }
+
         public IQueryable<Alumno> GetAlumnosByFullName(string fullName)
         {
             return GetAllAlumnos().Where(a => a.nombre_alumno + " " + a.apellido_paterno_alumno + " " + a.apellido_materno_alumno == fullName);

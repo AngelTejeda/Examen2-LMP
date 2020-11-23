@@ -1,5 +1,6 @@
 ﻿using Examen2_LMP.Backend;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Utilities
@@ -43,12 +44,13 @@ namespace Utilities
             Console.WriteLine();
         }
 
-        public static void ShowMessage(string message)
+        public static void ShowMessage(params string[] texts)
         {
-            DrawBox(
-                message,
-                "Presione Enter para continuar..."
-                );
+            List<string> temp = texts.ToList();
+            temp.Add("Presione Enter para continuar...");
+            texts = temp.ToArray();
+
+            DrawBox(texts);
             Console.ReadLine();
         }
     }
@@ -74,13 +76,18 @@ namespace Utilities
 
             return option;
         }
-        public static string RequestField(string requestMessage, Func<string, bool> lambda)
+        
+        public static string RequestField(string requestMessage, Func<string, bool> lambda, string title = "")
         {
             string field;
             do
             {
                 Console.Clear();
                 Console.WriteLine();
+                if (!title.Equals("")) {
+                    Format.DrawBox(title);
+                    Console.WriteLine();
+                }
                 Format.Write(requestMessage);
                 field = Console.ReadLine();
                 Console.WriteLine();
@@ -116,11 +123,12 @@ namespace Utilities
                         throw new Exception("Ya existe un alumno con esa matrícula.");
 
                     return true;
-                }
+                },
+                title: "Matrícula"
                 ));
         }
 
-        public static string RequestNonEmptyString(string fieldName)
+        public static string RequestNonEmptyString(string fieldName, string title = "")
         {
             return RequestField(
                 "Ingrese " + fieldName + ": ",
@@ -130,28 +138,29 @@ namespace Utilities
                         throw new Exception("Debe ingresar una cadena no vacía.");
 
                     return true;
-                }
+                },
+                title
                 );
         }
 
         public static string RequestNombre()
         {
-            return RequestNonEmptyString("el o los nombres del alumno");
+            return RequestNonEmptyString("el o los nombres del alumno", title: "Nombre");
         }
 
         public static string RequestApellidoPaterno()
         {
-            return RequestNonEmptyString("el apellido paterno del alumno");
+            return RequestNonEmptyString("el apellido paterno del alumno", title: "Apellido Paterno");
         }
 
         public static string RequestApellidoMaterno()
         {
-            return RequestNonEmptyString("el apellido materno del alumno");
+            return RequestNonEmptyString("el apellido materno del alumno", title: "Apellido Materno");
         }
 
         public static string RequestDireccion()
         {
-            return RequestNonEmptyString("la dirección del alumno");
+            return RequestNonEmptyString("la dirección del alumno", title: "Dirección");
         }
 
         public static string RequestTelefono()
@@ -166,7 +175,8 @@ namespace Utilities
                         throw new Exception("Debe ingresar 10 dígitos.");
 
                     return true;
-                }
+                },
+                title: "Teléfono"
                 );
         }
 
@@ -184,7 +194,8 @@ namespace Utilities
                         throw new Exception("El correo ingresado ya está registrado.");
 
                     return true;
-                }
+                },
+                title: "Correo"
                 );
         }
 
@@ -200,7 +211,8 @@ namespace Utilities
                         throw new Exception("Ingresó una carrera no válida.");
 
                     return true;
-                }
+                },
+                title: "Carrera"
                 );
         }
 
@@ -216,7 +228,8 @@ namespace Utilities
                         throw new Exception("Debe ingresar un número entre 1 y 9.");
 
                     return true;
-                }
+                },
+                title: "Semestre"
                 ));
         }
     }

@@ -1,6 +1,8 @@
 ﻿using Examen2_LMP.Backend;
 using Examen2_LMP.DataAccess;
+using Examen2_LMP.Models;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Utilities;
 
@@ -182,6 +184,11 @@ namespace Examen2_LMP
 
         public static void MenuBaja()
         {
+            Alumno alumno = SelectAlumno();
+
+            if (alumno == null)
+                return;
+
             string option;
             do
             {
@@ -206,13 +213,18 @@ namespace Examen2_LMP
 
         public static void MenuCambios()
         {
+            Alumno alumno = SelectAlumno();
+
+            if (alumno == null)
+                return;
+
             string option;
             do
             {
                 Console.Clear();
                 Console.WriteLine();
-                Console.WriteLine();
                 Format.DrawBox("Menú de Cambios");
+                Console.WriteLine();
                 Format.WriteLine("1. Salir");
 
                 Console.WriteLine();
@@ -250,6 +262,133 @@ namespace Examen2_LMP
                     default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "1");
+        }
+        
+        public static List<Alumno> GetAlumnosByApellidos()
+        {
+            List<Alumno> alumnos;
+
+            do
+            {
+                string apellidos;
+
+                apellidos = Requests.RequestField(
+                    "Ingrese los apellidos del alumno: ",
+                    str =>
+                    {
+                        if (str.Trim().Equals(""))
+                            throw new Exception("Debe ingresar una cadena no vacía.");
+                        if (str.Split(' ').Length < 2)
+                            throw new Exception("Debe ingresar los dos apellidos.");
+
+                        return true;
+                    },
+                    title: "Búscar Alumno"
+                    );
+
+                alumnos = new AlumnoSC()
+                    .GetAlumnosByApellido(apellidos)
+                    .OrderBy(a => a.nombre_alumno)
+                    .ToList();
+
+                if (alumnos.Count != 0)
+                    return alumnos;
+                else
+                {
+                    string option = Requests.AskForConfirmation(
+                        "No se han encontrado alumnos.",
+                        "¿Desea realizar otra búsqueda?"
+                        );
+
+                    if (option.Equals("N"))
+                        return null;
+                }
+
+            } while (true);
+        }
+
+        public static Alumno MenuSelectAlumno(List<Alumno> alumnos)
+        {
+            int alumnosPorPagina = 2;
+            int pos = 0;
+
+            do
+            {
+                string option;
+
+                //Mostrar Menú
+                Console.Clear();
+                Console.WriteLine();
+                Format.DrawBox("Buscar Alumno");
+                Console.WriteLine();
+                for (int i = 0; i < alumnosPorPagina; i++)
+                {
+                    if (pos + i < alumnos.Count)
+                    {
+                        AlumnoDTO alumno = new AlumnoDTO()
+                        {
+                            Matricula = alumnos[pos + i].matricula_alumno,
+                            Nombre = alumnos[pos + i].nombre_alumno,
+                            ApellidoPaterno = alumnos[pos + i].apellido_paterno_alumno,
+                            ApellidoMaterno = alumnos[pos + i].apellido_materno_alumno
+                        };
+
+                        Format.WriteLine((i + 1) + ": " + alumno.GetNombreCompleto() + " - " + alumno.Matricula);
+                    }
+                    else
+                        break;
+                }
+
+                Format.WriteLine("----------");
+                if (pos > 0)
+                    Format.WriteLine("A: Página Anterior");
+                if (pos + alumnosPorPagina < alumnos.Count)
+                    Format.WriteLine("S: Página Siguiente");
+                Format.WriteLine("R: Regresar");
+                Console.WriteLine();
+
+                //Pedir Opción
+                Format.Write("Seleccione un alumno o una opción: ");
+                option = Console.ReadLine();
+                Console.WriteLine();
+
+                if (int.TryParse(option, out int number) && pos + number <= alumnos.Count && number >= 1 && number <= alumnosPorPagina)
+                {
+                    Alumno selectedAlumno = alumnos[pos + number - 1];
+                    string confirm = Requests.AskForConfirmation(
+                        "---Datos del Alumno---",
+                        "",
+                        "Nombre: " + selectedAlumno.nombre_alumno + " " + selectedAlumno.apellido_paterno_alumno + " " + selectedAlumno.apellido_materno_alumno,
+                        "Matrícula: " + selectedAlumno.matricula_alumno,
+                        "Carrera: " + selectedAlumno.carrera,
+                        "Semestre: " + selectedAlumno.semestre_alumno,
+                        "",
+                        "¿Desea seleccionar este alumno?"
+                        );
+
+                    if (confirm.Equals("S"))
+                        return selectedAlumno;
+                }
+                else if (option.ToUpper().Equals("A") && pos > 0)
+                    pos -= alumnosPorPagina;
+                else if (option.ToUpper().Equals("S") && pos + alumnosPorPagina < alumnos.Count)
+                    pos += alumnosPorPagina;
+                else if (option.ToUpper().Equals("R"))
+                    return null;
+                else
+                    Format.ShowMessage("Opción Inválida");
+
+            } while (true);
+        }
+
+        public static Alumno SelectAlumno()
+        {
+            List<Alumno> alumnos = GetAlumnosByApellidos();
+
+            if (alumnos == null)
+                return null;
+
+            return MenuSelectAlumno(alumnos);
         }
     }
 }
