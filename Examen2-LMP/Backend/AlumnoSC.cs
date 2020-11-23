@@ -52,7 +52,7 @@ namespace Examen2_LMP.Backend
             return dbContext.Alumno;
         }
 
-        public Alumno GetAlumnoWithMatricula(int matricula)
+        public Alumno GetAlumnoByMatricula(int matricula)
         {
             return GetAllAlumnos().FirstOrDefault(a => a.matricula_alumno == matricula);
         }
@@ -62,9 +62,9 @@ namespace Examen2_LMP.Backend
             return GetAllAlumnos().Where(a => a.apellido_paterno_alumno.ToLower() + " " + a.apellido_materno_alumno.ToLower() == apellidos.ToLower());
         }
 
-        public IQueryable<Alumno> GetAlumnosByFullName(string fullName)
+        public IQueryable<Alumno> GetAlumnosByNombreCompleto(string fullName)
         {
-            return GetAllAlumnos().Where(a => a.nombre_alumno + " " + a.apellido_paterno_alumno + " " + a.apellido_materno_alumno == fullName);
+            return GetAllAlumnos().Where(a => a.nombre_alumno.ToLower() + " " + a.apellido_paterno_alumno.ToLower() + " " + a.apellido_materno_alumno.ToLower() == fullName.ToLower());
         }
 
         public IQueryable<Alumno> GetAlumnosByCarrera(string carrera)
@@ -91,7 +91,7 @@ namespace Examen2_LMP.Backend
                     matricula += rand.Next(10);
                 }
 
-                if (new AlumnoSC().GetAlumnoWithMatricula(int.Parse(matricula)) == null)
+                if (new AlumnoSC().GetAlumnoByMatricula(int.Parse(matricula)) == null)
                 {
                     alumno.matricula_alumno = int.Parse(matricula);
                     break;

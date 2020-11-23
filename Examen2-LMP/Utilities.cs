@@ -110,7 +110,7 @@ namespace Utilities
             return field;
         }
 
-        public static int RequestMatricula()
+        public static int RequestNewMatricula()
         {
             return int.Parse( RequestField(
                 "Ingrese la matrícula (7 dígitos): ",
@@ -120,8 +120,25 @@ namespace Utilities
                         throw new Exception("No puede ingresar caracteres que no sean numéricos.");
                     if (str.Length != 7)
                         throw new Exception("La longitud de la matrícula debe ser igual a 7.");
-                    if (new AlumnoSC().GetAlumnoWithMatricula(int.Parse(str)) != null)
+                    if (new AlumnoSC().GetAlumnoByMatricula(int.Parse(str)) != null)
                         throw new Exception("Ya existe un alumno con esa matrícula.");
+
+                    return true;
+                },
+                title: "Matrícula"
+                ));
+        }
+
+        public static int RequestExistingMatricula()
+        {
+            return int.Parse(RequestField(
+                "Ingrese la matrícula (7 dígitos): ",
+                str =>
+                {
+                    if (!int.TryParse(str, out int i))
+                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
+                    if (str.Length != 7)
+                        throw new Exception("La longitud de la matrícula debe ser igual a 7.");
 
                     return true;
                 },
@@ -135,8 +152,23 @@ namespace Utilities
                 "Ingrese " + fieldName + ": ",
                 str =>
                 {
-                    if (str.Length == 0)
-                        throw new Exception("Debe ingresar una cadena no vacía.");
+                    if(str.Equals(""))
+                        throw new Exception("La cadena no debe estar vacía.");
+                    if (!str.TrimStart().Equals(str))
+                        throw new Exception("La cadena no debe empezar con espacios en blanco.");
+                    if (!str.TrimEnd().Equals(str))
+                        throw new Exception("La cadena no debe terminar con espacios en blanco.");
+
+                    int cont = 0;
+                    for(int i=0; i<str.Length; i++)
+                    {
+                        if(cont > 1)
+                            throw new Exception("La cadena no debe contener más de un espacio contiguo.");
+                        if (str[i] == ' ')
+                            cont++;
+                        else
+                            cont = 0;
+                    }
 
                     return true;
                 },
@@ -234,21 +266,9 @@ namespace Utilities
                 ));
         }
         
-        public static string RequestApellidos()
+        public static string RequestNombreCompleto()
         {
-            return RequestField(
-                "Ingrese los apellidos del alumno: ",
-                str =>
-                {
-                    if (str.Trim().Equals(""))
-                        throw new Exception("Debe ingresar una cadena no vacía.");
-                    if (str.Split(' ').Length < 2)
-                        throw new Exception("Debe ingresar los dos apellidos.");
-
-                    return true;
-                },
-                title: "Búscar Alumno"
-                );
+            return RequestNonEmptyString("el nombre completo del alumno", "Nombre Completo");
         }
     }
 }

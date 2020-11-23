@@ -89,7 +89,7 @@ namespace Examen2_LMP
                 switch (option)
                 {
                     case "1":
-                        alumno.matricula_alumno = Requests.RequestMatricula();
+                        alumno.matricula_alumno = Requests.RequestNewMatricula();
                         fields[0] = true;
                         break;
                     case "2":
@@ -264,40 +264,54 @@ namespace Examen2_LMP
             } while (option != "1");
         }
         
-        public static List<Alumno> GetListOfAlumosByApellidos()
+        public static List<Alumno> GetListOfAlumnos()
         {
             List<Alumno> alumnos;
+            string option;
 
             do
             {
-                string apellidos;
+                Console.Clear();
+                Console.WriteLine();
+                Format.DrawBox("Seleccionar Alumno");
+                Console.WriteLine();
+                Format.WriteLine("1. Buscar por Nombre");
+                Format.WriteLine("2. Buscar por Matrícula");
+                Format.WriteLine("3. Salir");
 
-                apellidos = Requests.RequestApellidos();
+                Console.WriteLine();
+                Format.Write("Ingrese una opción: ");
+                option = Console.ReadLine();
+                Console.WriteLine();
 
-                alumnos = new AlumnoSC()
-                    .GetAlumnosByApellido(apellidos)
-                    .OrderBy(a => a.nombre_alumno)
-                    .ToList();
-
-                if (alumnos.Count != 0)
-                    return alumnos;
-                else
+                switch (option)
                 {
-                    string option = Requests.AskForConfirmation(
-                        "No se han encontrado alumnos.",
-                        "¿Desea realizar otra búsqueda?"
-                        );
+                    case "1":
+                        string nombreCompleto = Requests.RequestNombreCompleto();
 
-                    if (option.Equals("N"))
+                        alumnos = new AlumnoSC()
+                            .GetAlumnosByNombreCompleto(nombreCompleto)
+                            .OrderBy(a => a.nombre_alumno)
+                            .ToList();
+
+                        return alumnos;
+                    case "2":
+                        int matricula = Requests.RequestExistingMatricula();
+
+                        alumnos = new List<Alumno>();
+                        alumnos.Add(new AlumnoSC().GetAlumnoByMatricula(matricula));
+
+                        return alumnos;
+                    case "3":
                         return null;
+                    default: Format.ShowMessage("Opción Inválida"); break;
                 }
-
             } while (true);
         }
 
         public static Alumno SelectAlumnoFromList(List<Alumno> alumnos)
         {
-            int alumnosPorPagina = 2;
+            int alumnosPorPagina = 10;
             int pos = 0;
 
             do
@@ -307,8 +321,12 @@ namespace Examen2_LMP
                 //Mostrar Menú
                 Console.Clear();
                 Console.WriteLine();
-                Format.DrawBox("Buscar Alumno");
+                Format.DrawBox("Seleccionar Alumno");
                 Console.WriteLine();
+
+                Format.WriteLine("Página " + Math.Ceiling((float)pos/alumnosPorPagina + 1) + " de " + Math.Ceiling((float)alumnos.Count / alumnosPorPagina));
+                Console.WriteLine();
+
                 for (int i = 0; i < alumnosPorPagina; i++)
                 {
                     if (pos + i < alumnos.Count)
@@ -371,10 +389,25 @@ namespace Examen2_LMP
 
         public static Alumno SelectAlumno()
         {
-            List<Alumno> alumnos = GetListOfAlumosByApellidos();
+            List<Alumno> alumnos;
 
-            if (alumnos == null)
-                return null;
+            do
+            {
+                alumnos = GetListOfAlumnos();
+
+                if (alumnos != null && alumnos.Count > 0)
+                    break;
+                else
+                {
+                    string confirm = Requests.AskForConfirmation(
+                        "No se han encontrado alumnos.",
+                        "¿Desea realizar otra búsqueda?"
+                        );
+
+                    if (confirm.Equals("N"))
+                        return null;
+                }
+            } while (true);
 
             return SelectAlumnoFromList(alumnos);
         }
