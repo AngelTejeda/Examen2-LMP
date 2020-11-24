@@ -4,12 +4,12 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="LMPModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="matricula_alumno" />
           </Key>
-          <Property Name="matricula_alumno" Type="int" Nullable="false" />
+          <Property Name="matricula_alumno" Type="varchar" MaxLength="7" Nullable="false" />
           <Property Name="nombre_alumno" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="apellido_paterno_alumno" Type="varchar" MaxLength="40" Nullable="false" />
           <Property Name="apellido_materno_alumno" Type="varchar" MaxLength="40" Nullable="false" />
@@ -19,19 +19,19 @@
           <Property Name="carrera" Type="varchar" MaxLength="4" Nullable="false" />
           <Property Name="semestre_alumno" Type="int" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="LMPModelStoreContainer">
+        <EntityContainer Name="ModelStoreContainer">
           <EntitySet Name="Alumno" EntityType="Self.Alumno" Schema="dbo" store:Type="Tables" />
         </EntityContainer>
       </Schema>
     </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="LMPModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+      <Schema Namespace="Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="Alumno">
           <Key>
             <PropertyRef Name="matricula_alumno" />
           </Key>
-          <Property Name="matricula_alumno" Type="Int32" Nullable="false" />
+          <Property Name="matricula_alumno" Type="String" MaxLength="7" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="nombre_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="apellido_paterno_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="apellido_materno_alumno" Type="String" MaxLength="40" FixedLength="false" Unicode="false" Nullable="false" />
@@ -41,7 +41,7 @@
           <Property Name="carrera" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="semestre_alumno" Type="Int32" Nullable="false" />
         </EntityType>
-        <EntityContainer Name="LMPEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="Entities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Alumno" EntityType="Self.Alumno" />
         </EntityContainer>
       </Schema>
@@ -49,9 +49,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="LMPModelStoreContainer" CdmEntityContainer="LMPEntities">
+        <EntityContainerMapping StorageEntityContainer="ModelStoreContainer" CdmEntityContainer="Entities">
           <EntitySetMapping Name="Alumno">
-            <EntityTypeMapping TypeName="LMPModel.Alumno">
+            <EntityTypeMapping TypeName="Model.Alumno">
               <MappingFragment StoreEntitySet="Alumno">
                 <ScalarProperty Name="matricula_alumno" ColumnName="matricula_alumno" />
                 <ScalarProperty Name="nombre_alumno" ColumnName="nombre_alumno" />

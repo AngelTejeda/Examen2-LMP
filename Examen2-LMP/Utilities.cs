@@ -110,9 +110,9 @@ namespace Utilities
             return field;
         }
 
-        public static int RequestNewMatricula()
+        public static string RequestNewMatricula()
         {
-            return int.Parse( RequestField(
+            return RequestField(
                 "Ingrese la matrícula (7 dígitos): ",
                 str =>
                 {
@@ -120,18 +120,18 @@ namespace Utilities
                         throw new Exception("No puede ingresar caracteres que no sean numéricos.");
                     if (str.Length != 7)
                         throw new Exception("La longitud de la matrícula debe ser igual a 7.");
-                    if (new AlumnoSC().GetAlumnoByMatricula(int.Parse(str)) != null)
+                    if (new AlumnoSC().GetAlumnoByMatricula(str) != null)
                         throw new Exception("Ya existe un alumno con esa matrícula.");
 
                     return true;
                 },
                 title: "Matrícula"
-                ));
+                );
         }
 
-        public static int RequestExistingMatricula()
+        public static string RequestExistingMatricula()
         {
-            return int.Parse(RequestField(
+            return RequestField(
                 "Ingrese la matrícula (7 dígitos): ",
                 str =>
                 {
@@ -143,7 +143,7 @@ namespace Utilities
                     return true;
                 },
                 title: "Matrícula"
-                ));
+                );
         }
 
         public static string RequestNonEmptyString(string fieldName, string title = "")

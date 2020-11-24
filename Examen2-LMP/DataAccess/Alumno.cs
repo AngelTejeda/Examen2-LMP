@@ -14,7 +14,7 @@ namespace Examen2_LMP.DataAccess
     
     public partial class Alumno
     {
-        public int matricula_alumno { get; set; }
+        public string matricula_alumno { get; set; }
         public string nombre_alumno { get; set; }
         public string apellido_paterno_alumno { get; set; }
         public string apellido_materno_alumno { get; set; }

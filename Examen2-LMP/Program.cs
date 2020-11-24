@@ -67,7 +67,7 @@ namespace Examen2_LMP
                 Console.WriteLine();
                 Format.DrawBox("Datos del Nuevo Alumno");
                 Console.WriteLine();
-                Format.WriteLine("1. Matricula: " + (alumno.matricula_alumno == 0 ? "----" : alumno.matricula_alumno.ToString()));
+                Format.WriteLine("1. Matricula: " + (alumno.matricula_alumno == "" ? "----" : alumno.matricula_alumno));
                 Format.WriteLine("2. Nombre: " + (alumno.nombre_alumno == "" ? "----" : alumno.nombre_alumno.ToString()));
                 Format.WriteLine("3. Apellido Paterno: " + (alumno.apellido_paterno_alumno == "" ? "----" : alumno.apellido_paterno_alumno.ToString()));
                 Format.WriteLine("4. Apellido Materno: " + (alumno.apellido_materno_alumno == "" ? "----" : alumno.apellido_materno_alumno.ToString()));
@@ -296,7 +296,7 @@ namespace Examen2_LMP
 
                         return alumnos;
                     case "2":
-                        int matricula = Requests.RequestExistingMatricula();
+                        string matricula = Requests.RequestExistingMatricula();
 
                         alumnos = new List<Alumno>();
                         alumnos.Add(new AlumnoSC().GetAlumnoByMatricula(matricula));

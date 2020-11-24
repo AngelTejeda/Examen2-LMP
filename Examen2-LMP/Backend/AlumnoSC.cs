@@ -52,7 +52,7 @@ namespace Examen2_LMP.Backend
             return dbContext.Alumno;
         }
 
-        public Alumno GetAlumnoByMatricula(int matricula)
+        public Alumno GetAlumnoByMatricula(string matricula)
         {
             return GetAllAlumnos().FirstOrDefault(a => a.matricula_alumno == matricula);
         }
@@ -91,9 +91,9 @@ namespace Examen2_LMP.Backend
                     matricula += rand.Next(10);
                 }
 
-                if (new AlumnoSC().GetAlumnoByMatricula(int.Parse(matricula)) == null)
+                if (new AlumnoSC().GetAlumnoByMatricula(matricula) == null)
                 {
-                    alumno.matricula_alumno = int.Parse(matricula);
+                    alumno.matricula_alumno = matricula;
                     break;
                 }
             } while (true);
