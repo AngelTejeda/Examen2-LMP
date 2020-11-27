@@ -30,12 +30,13 @@ namespace Examen2_LMP.Backend
         {
             try
             {
+                dbContext.Alumno.Attach(alumno);
                 dbContext.Alumno.Remove(alumno);
                 dbContext.SaveChanges();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                Format.ShowMessage("Se ha producido un error. No se ha podido eliminar al alumno.");
+                Format.ShowMessage("Se ha producido un error. No se ha podido eliminar al alumno.", "Error: " + e.Message);
 
                 return false;
             }

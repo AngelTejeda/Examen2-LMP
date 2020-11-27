@@ -189,6 +189,11 @@ namespace Examen2_LMP
             if (alumno == null)
                 return;
 
+            if (new AlumnoSC().RemoveAlumno(alumno))
+                return;
+            else
+                Format.ShowMessage("Chale");
+
             string option;
             do
             {
@@ -359,22 +364,7 @@ namespace Examen2_LMP
                 Console.WriteLine();
 
                 if (int.TryParse(option, out int number) && pos + number <= alumnos.Count && number >= 1 && number <= alumnosPorPagina)
-                {
-                    Alumno selectedAlumno = alumnos[pos + number - 1];
-                    string confirm = Requests.AskForConfirmation(
-                        "---Datos del Alumno---",
-                        "",
-                        "Nombre: " + selectedAlumno.nombre_alumno + " " + selectedAlumno.apellido_paterno_alumno + " " + selectedAlumno.apellido_materno_alumno,
-                        "Matrícula: " + selectedAlumno.matricula_alumno,
-                        "Carrera: " + selectedAlumno.carrera,
-                        "Semestre: " + selectedAlumno.semestre_alumno,
-                        "",
-                        "¿Desea seleccionar este alumno?"
-                        );
-
-                    if (confirm.Equals("S"))
-                        return selectedAlumno;
-                }
+                    return alumnos[pos + number - 1];
                 else if (option.ToUpper().Equals("A") && pos > 0)
                     pos -= alumnosPorPagina;
                 else if (option.ToUpper().Equals("S") && pos + alumnosPorPagina < alumnos.Count)
@@ -409,7 +399,27 @@ namespace Examen2_LMP
                 }
             } while (true);
 
-            return SelectAlumnoFromList(alumnos);
+            do
+            {
+                Alumno selectedAlumno = SelectAlumnoFromList(alumnos);
+
+                if (selectedAlumno == null)
+                    return null;
+
+                string confirm = Requests.AskForConfirmation(
+                        "---Datos del Alumno---",
+                        "",
+                        "Nombre: " + selectedAlumno.nombre_alumno + " " + selectedAlumno.apellido_paterno_alumno + " " + selectedAlumno.apellido_materno_alumno,
+                        "Matrícula: " + selectedAlumno.matricula_alumno,
+                        "Carrera: " + selectedAlumno.carrera,
+                        "Semestre: " + selectedAlumno.semestre_alumno,
+                        "",
+                        "¿Desea seleccionar este alumno?"
+                        );
+
+                if (confirm.Equals("S"))
+                    return selectedAlumno;
+            } while (true);
         }
     }
 }

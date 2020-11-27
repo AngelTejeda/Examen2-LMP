@@ -47,6 +47,7 @@ namespace Utilities
         public static void ShowMessage(params string[] texts)
         {
             List<string> temp = texts.ToList();
+            temp.Add("");
             temp.Add("Presione Enter para continuar...");
             texts = temp.ToArray();
 
