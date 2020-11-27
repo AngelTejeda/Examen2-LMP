@@ -86,43 +86,49 @@ namespace Examen2_LMP
                 option = Console.ReadLine();
                 Console.WriteLine();
 
+                if(int.TryParse(option, out int field))
+                {
+                    if (field >= 1 && field <= 9)
+                        fields[field - 1] = true;
+                }
+                    
+
                 switch (option)
                 {
                     case "1":
                         alumno.matricula_alumno = Requests.RequestNewMatricula();
-                        fields[0] = true;
                         break;
                     case "2":
                         alumno.nombre_alumno = Requests.RequestNombre();
-                        fields[1] = true;
+                        
                         break;
                     case "3":
                         alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno();
-                        fields[2] = true;
+                        
                         break;
                     case "4":
                         alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno();
-                        fields[3] = true;
+                        
                         break;
                     case "5":
                         alumno.direccion_alumno = Requests.RequestDireccion();
-                        fields[4] = true;
+                        
                         break;
                     case "6":
                         alumno.telefono_alumno = Requests.RequestTelefono();
-                        fields[5] = true;
+                        
                         break;
                     case "7":
                         alumno.correo_alumno = Requests.RequestCorreo();
-                        fields[6] = true;
+                        
                         break;
                     case "8":
                         alumno.carrera = Requests.RequestCarrera();
-                        fields[7] = true;
+                        
                         break;
                     case "9":
                         alumno.semestre_alumno = Requests.RequestSemestre();
-                        fields[8] = true;
+                        
                         break;
                     case "t":
                     case "T":
@@ -385,18 +391,21 @@ namespace Examen2_LMP
             {
                 alumnos = GetListOfAlumnos();
 
-                if (alumnos != null && alumnos.Count > 0)
-                    break;
-                else
-                {
-                    string confirm = Requests.AskForConfirmation(
+                if (alumnos != null)
+                    if (alumnos.Count > 0)
+                        break;
+                    else
+                    {
+                        string confirm = Requests.AskForConfirmation(
                         "No se han encontrado alumnos.",
                         "¿Desea realizar otra búsqueda?"
                         );
 
-                    if (confirm.Equals("N"))
-                        return null;
-                }
+                        if (confirm.Equals("N"))
+                            return null;
+                    }
+                else
+                    return null;
             } while (true);
 
             do
