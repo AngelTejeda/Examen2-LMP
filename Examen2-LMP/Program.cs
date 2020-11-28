@@ -334,8 +334,11 @@ namespace Examen2_LMP
             } while (true);
         }
 
-        //Dada una lista de alumnos, muestra una determinada cantidad de alumnos por página y permite que se seleccione uno.
-        //El método retorna el Alumno seleccionado.
+        /// <summary>
+        /// Dada una lista de alumnos, muestra los alumnos de la lista por páginas y perimte que el usuario seleccionar alguno o que navegue entre las páginas.
+        /// </summary>
+        /// <param name="alumnos">Lista tipo List&lt;Alumno&gt; que contiene a los alumnos que se mostrarán.</param>
+        /// <returns>El alumno seleccionado, o null si se selecciona la opción de regresar.</returns>
         public static Alumno SelectAlumnoFromList(List<Alumno> alumnos)
         {
             int alumnosPorPagina = 10;
