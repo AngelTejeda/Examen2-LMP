@@ -17,9 +17,10 @@ namespace Examen2_LMP
 
         public static void Menu()
         {
-            string option;
+            string option;  //Opción que ingresa el usuario
             do
             {
+                //Impresion del Menú
                 Console.Clear();
                 Console.WriteLine();
                 Format.DrawBox("Menú");
@@ -31,17 +32,30 @@ namespace Examen2_LMP
                 Format.WriteLine("5. Salir");
                 Console.WriteLine();
 
+                //Solicitud de Opción
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
                 
+                //Opciones del Menú
                 switch(option)
                 {
                     case "1": MenuAlta(); break;
                     case "2": MenuBaja(); break;
                     case "3": MenuCambios(); break;
                     case "4": MenuConsultas(); break;
-                    case "5": break;
+                    case "5":
+                        string confirm = Requests.AskForConfirmation("¿Desea salir del programa?");
+                        if (confirm == "S")
+                        {
+                            Console.WriteLine();
+                            Format.ShowMessage("El programa va a terminar su ejecucion.");
+                        }
+                        else
+                        {
+                            option = "0";
+                        }
+                        break;
                     default: Format.ShowMessage("Opción Inválida"); break;
                 }
             } while (option != "5");
@@ -49,10 +63,11 @@ namespace Examen2_LMP
 
         public static void MenuAlta()
         {
-            Alumno alumno = new Alumno();
-            string option;
-            bool[] fields = new bool[9];
+            Alumno alumno = new Alumno();   //Nuevo alumno 
+            bool[] fields = new bool[9];    //Campos que ya fueron registrados
+            string option;                  //Opción ingresada por el usuario
 
+            //Inicialización de los campos del alumno.
             alumno.nombre_alumno = "";
             alumno.apellido_paterno_alumno = "";
             alumno.apellido_materno_alumno = "";
@@ -63,6 +78,7 @@ namespace Examen2_LMP
 
             do
             {
+                //Impresión del Menú
                 Console.Clear();
                 Console.WriteLine();
                 Format.DrawBox("Datos del Nuevo Alumno");
@@ -82,72 +98,61 @@ namespace Examen2_LMP
                 Format.WriteLine("S. Salir");
                 Console.WriteLine();
 
+                //Solicitud de Opción
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
 
-                if(int.TryParse(option, out int field))
+                //Si la opción ingresada es numérica
+                if (int.TryParse(option, out int field))
                 {
+                    //Y el número está dentro del rango permitido
                     if (field >= 1 && field <= 9)
-                        fields[field - 1] = true;
+                        fields[field - 1] = true;   //El campo se marca como registrado
                 }
-                    
+                //Si la opción ingresada no es numérica
+                else
+                    option = option.ToUpper();
 
+                //Opciones del Menú
                 switch (option)
                 {
                     case "1":
-                        alumno.matricula_alumno = Requests.RequestNewMatricula();
-                        break;
+                        alumno.matricula_alumno = Requests.RequestNewMatricula(); break;
                     case "2":
-                        alumno.nombre_alumno = Requests.RequestNombre();
-                        
-                        break;
+                        alumno.nombre_alumno = Requests.RequestNombre(); break;
                     case "3":
-                        alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno();
-                        
-                        break;
+                        alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno(); break;
                     case "4":
-                        alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno();
-                        
-                        break;
+                        alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno(); break;
                     case "5":
-                        alumno.direccion_alumno = Requests.RequestDireccion();
-                        
-                        break;
+                        alumno.direccion_alumno = Requests.RequestDireccion(); break;
                     case "6":
-                        alumno.telefono_alumno = Requests.RequestTelefono();
-                        
-                        break;
+                        alumno.telefono_alumno = Requests.RequestTelefono(); break;
                     case "7":
-                        alumno.correo_alumno = Requests.RequestCorreo();
-                        
-                        break;
+                        alumno.correo_alumno = Requests.RequestCorreo(); break;
                     case "8":
-                        alumno.carrera = Requests.RequestCarrera();
-                        
-                        break;
+                        alumno.carrera = Requests.RequestCarrera(); break;
                     case "9":
-                        alumno.semestre_alumno = Requests.RequestSemestre();
-                        
-                        break;
-                    case "t":
+                        alumno.semestre_alumno = Requests.RequestSemestre(); break;
                     case "T":
                         alumno = new AlumnoSC().GenerateRandomAlumno();
 
                         for(int i=0; i<9; i++)
-                        {
                             fields[i] = true;
-                        }
 
                         break;
-                    case "r":
                     case "R":
                         Console.Clear();
                         Console.WriteLine();
+
+                        //Si no se han ingresado todos los campos
                         if (fields.Contains(false))
                             Format.ShowMessage("Debe ingresar todos los campos primero.");
+                        //Si ya se ingresaron todos los campos
                         else
                         {
+                            //Se pide confirmación del registro.
                             string confirm = Requests.AskForConfirmation(
                                 "---Datos del Alumno---",
                                 "",
@@ -162,17 +167,20 @@ namespace Examen2_LMP
                                 "¿Desea registrar a este alumno?"
                                 );
 
+                            //Si confirma el registro
                             if(confirm == "S") {
                                 Console.WriteLine();
+                                //Si el alumno se registra con éxito
                                 if(new AlumnoSC().AddAlumno(alumno))
-                                    option = "S";
+                                    option = "S";   //Se rompe el ciclo.
                             }
                         }
                         break;
-                    case "s":
                     case "S":
+                        //Si ya se han ingresado campos.
                         if (fields.Contains(true))
                         {
+                            //Se pide confirmación para salir.
                             string exit = Requests.AskForConfirmation("Se perderán los datos ingresados.", "¿Desea Salir?");
 
                             if (exit == "N")
@@ -195,31 +203,31 @@ namespace Examen2_LMP
             if (alumno == null)
                 return;
 
-            if (new AlumnoSC().RemoveAlumno(alumno))
-                return;
-            else
-                Format.ShowMessage("Chale");
-
             string option;
             do
             {
-                Console.Clear();
-                Console.WriteLine();
-                Format.DrawBox("Menú de Baja");
-                Console.WriteLine();
-                Format.WriteLine("1. Salir");
+                String alumno_nombreCompleto = alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno;
 
-                Console.WriteLine();
-                Format.Write("Ingrese una opción: ");
-                option = Console.ReadLine();
-                Console.WriteLine();
+                option = Requests.AskForConfirmation("Se dara de baja al alumno: ",
+                    "",
+                    "Matrícula: " + alumno.matricula_alumno,
+                    "Nombre: " + alumno_nombreCompleto,
+                    "Dirección: " + alumno.direccion_alumno,
+                    "Teléfono: " + alumno.telefono_alumno,
+                    "Correo: " + alumno.correo_alumno,
+                    "Carrera: " + alumno.carrera,
+                    "Semestre: " + alumno.semestre_alumno,
+                    "",
+                    "¿Desea continuar con la baja del alumno?");
 
-                switch (option)
+                if (option == "S")
                 {
-                    case "1": break;
-                    default: Format.ShowMessage("Opción Inválida"); break;
+                    if (new AlumnoSC().RemoveAlumno(alumno))
+                        option = "N";
                 }
-            } while (option != "1");
+                else
+                    Format.ShowMessage("Se canceló la baja del alumno.");
+            } while (option != "N");
         }
 
         public static void MenuCambios()
@@ -274,7 +282,8 @@ namespace Examen2_LMP
                 }
             } while (option != "1");
         }
-        
+
+        //Regresa una lista de alumnos, ya sea por nombre o por matrícula. Si se selecciona la opción de salir regresa null.
         public static List<Alumno> GetListOfAlumnos()
         {
             List<Alumno> alumnos;
@@ -282,6 +291,7 @@ namespace Examen2_LMP
 
             do
             {
+                //Impresión del Menú
                 Console.Clear();
                 Console.WriteLine();
                 Format.DrawBox("Seleccionar Alumno");
@@ -289,17 +299,20 @@ namespace Examen2_LMP
                 Format.WriteLine("1. Buscar por Nombre");
                 Format.WriteLine("2. Buscar por Matrícula");
                 Format.WriteLine("3. Salir");
-
                 Console.WriteLine();
+
+                //Solicitud de opción
                 Format.Write("Ingrese una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
 
+                //Opciones del menú
                 switch (option)
                 {
                     case "1":
                         string nombreCompleto = Requests.RequestNombreCompleto();
 
+                        //Lista de alumnos con el nombre ingresado.
                         alumnos = new AlumnoSC()
                             .GetAlumnosByNombreCompleto(nombreCompleto)
                             .OrderBy(a => a.nombre_alumno)
@@ -309,6 +322,7 @@ namespace Examen2_LMP
                     case "2":
                         string matricula = Requests.RequestExistingMatricula();
 
+                        //Lista de alumnos con un solo registro del alumno con la matrícula ingresada.
                         alumnos = new List<Alumno>();
                         alumnos.Add(new AlumnoSC().GetAlumnoByMatricula(matricula));
 
@@ -320,6 +334,8 @@ namespace Examen2_LMP
             } while (true);
         }
 
+        //Dada una lista de alumnos, muestra una determinada cantidad de alumnos por página y permite que se seleccione uno.
+        //El método retorna el Alumno seleccionado.
         public static Alumno SelectAlumnoFromList(List<Alumno> alumnos)
         {
             int alumnosPorPagina = 10;
@@ -329,15 +345,17 @@ namespace Examen2_LMP
             {
                 string option;
 
-                //Mostrar Menú
+                //Impresión del Menú
                 Console.Clear();
                 Console.WriteLine();
                 Format.DrawBox("Seleccionar Alumno");
                 Console.WriteLine();
 
+                //Página actual
                 Format.WriteLine("Página " + Math.Ceiling((float)pos/alumnosPorPagina + 1) + " de " + Math.Ceiling((float)alumnos.Count / alumnosPorPagina));
                 Console.WriteLine();
 
+                //Alumnos en la página
                 for (int i = 0; i < alumnosPorPagina; i++)
                 {
                     if (pos + i < alumnos.Count)
@@ -356,6 +374,7 @@ namespace Examen2_LMP
                         break;
                 }
 
+                //Opciones de Navegación
                 Format.WriteLine("----------");
                 if (pos > 0)
                     Format.WriteLine("A: Anterior Página");
@@ -364,19 +383,25 @@ namespace Examen2_LMP
                 Format.WriteLine("R: Regresar");
                 Console.WriteLine();
 
-                //Pedir Opción
+                //Solicitud de Opción
                 Format.Write("Seleccione un alumno o una opción: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
 
+                //Opciones del Menú
+
+                //Si la opción es numérica y está en el rango de alumnos que se pueden seleccionar
                 if (int.TryParse(option, out int number) && pos + number <= alumnos.Count && number >= 1 && number <= alumnosPorPagina)
-                    return alumnos[pos + number - 1];
+                    return alumnos[pos + number - 1];   //El método regresa al alumno seleccionado
+                
+                //Opciones de Navegación
                 else if (option.ToUpper().Equals("A") && pos > 0)
-                    pos -= alumnosPorPagina;
+                    pos -= alumnosPorPagina;    //Regresar página
                 else if (option.ToUpper().Equals("S") && pos + alumnosPorPagina < alumnos.Count)
-                    pos += alumnosPorPagina;
+                    pos += alumnosPorPagina;    //Avanzar Página
                 else if (option.ToUpper().Equals("R"))
                     return null;
+                
                 else
                     Format.ShowMessage("Opción Inválida");
 

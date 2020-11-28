@@ -81,45 +81,27 @@ namespace Examen2_LMP.Backend
         //Otros
         public Alumno GenerateRandomAlumno()
         {
+            string[] carreras = { "LCC", "LSTI", "LM", "LF", "LMAD", "LA" };
             Alumno alumno = new Alumno();
-            Random rand = new Random();
 
             do
             {
-                string matricula = "";
-                for (int i = 0; i < 7; i++)
-                {
-                    matricula += rand.Next(10);
-                }
+                alumno.matricula_alumno = Other.RandomNumber(7).ToString();
 
-                if (new AlumnoSC().GetAlumnoByMatricula(matricula) == null)
-                {
-                    alumno.matricula_alumno = matricula;
+                if (new AlumnoSC().GetAlumnoByMatricula(alumno.matricula_alumno) == null)
                     break;
-                }
             } while (true);
-            alumno.nombre_alumno = "Nombre" + rand.Next(10000);
-            alumno.apellido_paterno_alumno = "ApellidoPaterno" + rand.Next(10000);
-            alumno.apellido_materno_alumno = "ApellidoMaterno" + rand.Next(10000);
-            alumno.direccion_alumno = "Dirección" + rand.Next(10000);
-            string telefono = "";
-            for (int i = 0; i < 10; i++)
-            {
-                telefono += rand.Next(10);
-            }
-            alumno.telefono_alumno = telefono;
+            alumno.nombre_alumno = "Nombre" + Other.RandomNumber();
+            alumno.apellido_paterno_alumno = "ApellidoPaterno" + Other.RandomNumber();
+            alumno.apellido_materno_alumno = "ApellidoMaterno" + Other.RandomNumber();
+            alumno.direccion_alumno = "Dirección" + Other.RandomNumber();
+            alumno.telefono_alumno = Other.RandomNumber(10).ToString();
             do
             {
                 string correo = "";
-                for (int i = 0; i < rand.Next(10); i++)
-                {
-                    correo += rand.Next(10);
-                }
+                correo += Other.RandomNumber();
                 correo += "@";
-                for (int i = 0; i < rand.Next(10); i++)
-                {
-                    correo += rand.Next(10);
-                }
+                correo += Other.RandomNumber();
                 correo += ".com";
 
                 if (new AlumnoSC().GetAllAlumnos().FirstOrDefault(a => a.correo_alumno == correo) == null)
@@ -127,12 +109,9 @@ namespace Examen2_LMP.Backend
                     alumno.correo_alumno = correo;
                     break;
                 }
-
             } while (true);
-            string[] carreras = { "LCC", "LSTI", "LM", "LF", "LMAD", "LA" };
-
-            alumno.carrera = carreras[rand.Next(6)];
-            alumno.semestre_alumno = rand.Next(9) + 1;
+            alumno.carrera = carreras[ new Random().Next(6) ];
+            alumno.semestre_alumno = (int)Other.RandomNumber(1) + 1;
 
             return alumno;
         }

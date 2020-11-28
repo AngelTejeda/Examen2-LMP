@@ -16,7 +16,7 @@ namespace Utilities
         {
             Console.Write("   " + text);
         }
-
+        
         public static void DrawBox(params string[] texts)
         {
             int maxLength = texts.Max(t => t.Length);
@@ -270,6 +270,24 @@ namespace Utilities
         public static string RequestNombreCompleto()
         {
             return RequestNonEmptyString("el nombre completo del alumno", "Nombre Completo");
+        }
+    }
+
+    class Other
+    {
+        public static long RandomNumber(int digits = 0)
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+
+            string number = "";
+
+            if(digits == 0)
+                digits = rand.Next(1, 11);
+
+            for(int i=0; i<digits; i++)
+                number += rand.Next(0, 10);
+
+            return long.Parse(number);
         }
     }
 }
