@@ -20,9 +20,9 @@ namespace Examen2_LMP.Backend
                 dbContext.Alumno.Add(newAlumno);
                 dbContext.SaveChanges();
             }
-            catch(Exception)
+            catch(Exception e)
             {
-                Format.ShowMessage("Se ha producido un error. No se ha podido registrar al alumno.");
+                Format.ShowMessage("Se ha producido un error. No se ha podido registrar al alumno.", "Error: " + e.Message);
 
                 return false;
             }
@@ -57,6 +57,26 @@ namespace Examen2_LMP.Backend
         }
 
         /* Cambios */
+        public bool UpdateAlumno(Alumno alumno)
+        {
+            try
+            {
+                Alumno alumnoInDB = GetAlumnoByMatricula(alumno.matricula_alumno);
+
+                dbContext.Entry(alumnoInDB).CurrentValues.SetValues(alumno);
+                dbContext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                Format.ShowMessage("Se ha producido un error. No se ha podido actualizar al alumno.", "Error: " + e.Message);
+
+                return false;
+            }
+
+            Format.ShowMessage("Se ha eliminado al alumno con éxito.");
+            return true;
+        }
+
 
         /* Consultas */
         /// <summary>

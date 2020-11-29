@@ -206,7 +206,7 @@ namespace Examen2_LMP
             string option;
             do
             {
-                String alumno_nombreCompleto = alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno;
+                string alumno_nombreCompleto = alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno;
 
                 option = Requests.AskForConfirmation("Se dara de baja al alumno: ",
                     "",
@@ -264,23 +264,101 @@ namespace Examen2_LMP
             string option;
             do
             {
+                List<Alumno> students = new List<Alumno>();
+
                 Console.Clear();
                 Console.WriteLine();
-                Console.WriteLine();
                 Format.DrawBox("Menú de Consultas");
-                Format.WriteLine("1. Salir");
+                Console.WriteLine();
+                Format.WriteLine("1. Matricula");
+                Format.WriteLine("2. Apellidos");
+                Format.WriteLine("3. Nombre Completo");
+                Format.WriteLine("4. Carrera");
+                Format.WriteLine("5. Semestre");
+                Format.WriteLine("6. Consulta General");
+                Format.WriteLine("7. Salir");
 
                 Console.WriteLine();
-                Format.Write("Ingrese una opción: ");
+                Format.Write("Ingrese el tipo de consulta a realizar: ");
                 option = Console.ReadLine();
                 Console.WriteLine();
 
                 switch (option)
                 {
-                    case "1": break;
+                    case "1":
+                        string matricula = Requests.RequestExistingMatricula();
+                        Alumno alumno = new AlumnoSC().GetAlumnoByMatricula(matricula);
+
+                        if (alumno != null)
+                            students.Add(alumno);
+
+                        break;
+                    case "2":
+                        string apellidoPaterno = Requests.RequestApellidoPaterno();
+                        string apellidoMaterno = Requests.RequestApellidoMaterno();
+                        string apellidos = apellidoPaterno + " " + apellidoMaterno;
+
+                        students = new AlumnoSC().GetAlumnosByApellido(apellidos).ToList();
+
+                        break;
+                    case "3":
+                        string nombreCompleto = Requests.RequestNombreCompleto();
+
+                        students = new AlumnoSC().GetAlumnosByNombreCompleto(nombreCompleto).ToList();
+
+                        break;
+                    case "4":
+                        string carrera = Requests.RequestCarrera();
+
+                        students = new AlumnoSC().GetAlumnosByCarrera(carrera).ToList();
+
+                        break;
+                    case "5":
+                        int semestre = Requests.RequestSemestre();
+
+                        students = new AlumnoSC().GetAlumnosBySemestre(semestre).ToList();
+
+                        break;
+                    case "6":
+                        students = new AlumnoSC().GetAllAlumnos().ToList();
+
+                        break;
+                    case "7": return;
                     default: Format.ShowMessage("Opción Inválida"); break;
                 }
-            } while (option != "1");
+
+                if (students.Count != 0)
+                {
+                    Alumno alumno = SelectAlumnoFromList(students);
+
+                    if (alumno != null)
+                    {
+                        Console.Clear();
+                        Console.WriteLine();
+                        Format.ShowMessage(
+                            "---Datos del Alumno---",
+                            "",
+                            "Matrícula: " + alumno.matricula_alumno,
+                            "Nombre: " + alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno,
+                            "Dirección: " + alumno.direccion_alumno,
+                            "Teléfono: " + alumno.telefono_alumno,
+                            "Correo: " + alumno.correo_alumno,
+                            "Carrera: " + alumno.carrera,
+                            "Semestre: " + alumno.semestre_alumno
+                            );
+                    }
+                }
+                else
+                {
+                    string confirm = Requests.AskForConfirmation(
+                    "No se han encontrado alumnos.",
+                    "¿Desea realizar otra consulta?"
+                    );
+
+                    if (confirm.Equals("N"))
+                        return;
+                }
+            } while (true);
         }
 
         //Regresa una lista de alumnos, ya sea por nombre o por matrícula. Si se selecciona la opción de salir regresa null.
@@ -323,8 +401,11 @@ namespace Examen2_LMP
                         string matricula = Requests.RequestExistingMatricula();
 
                         //Lista de alumnos con un solo registro del alumno con la matrícula ingresada.
+                        Alumno alumno = new AlumnoSC().GetAlumnoByMatricula(matricula);
                         alumnos = new List<Alumno>();
-                        alumnos.Add(new AlumnoSC().GetAlumnoByMatricula(matricula));
+
+                        if(alumno != null)
+                            alumnos.Add(alumno);
 
                         return alumnos;
                     case "3":
