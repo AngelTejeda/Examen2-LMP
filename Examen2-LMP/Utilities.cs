@@ -5,6 +5,9 @@ using System.Linq;
 
 namespace Utilities
 {
+    /// <summary>
+    /// Contiene métodos para dar formato a la salida en consola.
+    /// </summary>
     class Format
     {
         /// <summary>
@@ -72,6 +75,9 @@ namespace Utilities
         }
     }
 
+    /// <summary>
+    /// Contienen métodos para facilitar la solicitud de datos al usuario.
+    /// </summary>
     class Requests
     {
         /// <summary>
@@ -155,12 +161,10 @@ namespace Utilities
             return RequestField(
                 lambda: str =>
                 {
-                    //La cadena es numérica.
-                    if (!int.TryParse(str, out int i))
-                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
-                    //La cadena tiene longitud 7.
-                    if (str.Length != 7)
-                        throw new Exception("La longitud de la matrícula debe ser igual a 7.");
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNumericString(str);
+                    Validations.ValidateStringLength(str, 7);
+
                     //La cadena no representa una matrícula que ya existe en la base de datos.
                     if (new AlumnoSC().GetAlumnoByMatricula(str) != null)
                         throw new Exception("Ya existe un alumno con esa matrícula.");
@@ -181,12 +185,9 @@ namespace Utilities
             return RequestField(
                 lambda: str =>
                 {
-                    //La cadena es numérica.
-                    if (!int.TryParse(str, out int i))
-                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
-                    //La cadena tiene longitud 7.
-                    if (str.Length != 7)
-                        throw new Exception("La longitud de la matrícula debe ser igual a 7.");
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNumericString(str);
+                    Validations.ValidateStringLength(str, 7);
 
                     return true;
                 },
@@ -201,32 +202,14 @@ namespace Utilities
         /// <param name="fieldName">Nombre del dato que se le pide al usuario.</param>
         /// <param name="title">Parámetro opcional. Si se utiliza imprime la cadena como un título.</param>
         /// <returns>Un string con la cadena ingresada por el usuario.</returns>
-        public static string RequestNonEmptyString(string fieldName, string title = "")
+        public static string RequestNonEmptyAlphaString(string fieldName, string title = "")
         {
             return RequestField(
                 lambda: str =>
                 {
-                    //La cadena no está vacía.
-                    if(str.Equals(""))
-                        throw new Exception("La cadena no debe estar vacía.");
-                    //La cadena no empieza con espacios en blanco.
-                    if (!str.TrimStart().Equals(str))
-                        throw new Exception("La cadena no debe empezar con espacios en blanco.");
-                    //La cadena no termina con espacios en blanco.
-                    if (!str.TrimEnd().Equals(str))
-                        throw new Exception("La cadena no debe terminar con espacios en blanco.");
-
-                    //La cadena no tiene espacios en blanco consecutivos.
-                    int cont = 0;
-                    for(int i=0; i<str.Length; i++)
-                    {
-                        if(cont > 1)
-                            throw new Exception("La cadena no debe contener más de un espacio contiguo.");
-                        if (str[i] == ' ')
-                            cont++;
-                        else
-                            cont = 0;
-                    }
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNonConsecutiveSpaces(str);
+                    Validations.ValidateAlphaString(str);
 
                     return true;
                 },
@@ -236,30 +219,30 @@ namespace Utilities
         }
 
         /// <summary>
-        /// Pide al usuario un nombre. Utiliza la función RequestNonEmptyString() para validar la cadena.
+        /// Pide al usuario un nombre. Utiliza la función RequestNonEmptyAlphaString() para validar la cadena.
         /// </summary>
         /// <returns>Un string con el nombre ingresado por el usuario.</returns>
         public static string RequestNombre()
         {
-            return RequestNonEmptyString("el o los nombres del alumno", title: "Nombre");
+            return RequestNonEmptyAlphaString("el o los nombres del alumno", title: "Nombre");
         }
 
         /// <summary>
-        /// Pide al usuario el apellido paterno. Utiliza la función RequestNonEmptyString() para validar la cadena.
+        /// Pide al usuario el apellido paterno. Utiliza la función RequestNonEmptyAlphaString() para validar la cadena.
         /// </summary>
         /// <returns>Un string con el apellido ingresado por el usuario.</returns>
         public static string RequestApellidoPaterno()
         {
-            return RequestNonEmptyString("el apellido paterno del alumno", title: "Apellido Paterno");
+            return RequestNonEmptyAlphaString("el apellido paterno del alumno", title: "Apellido Paterno");
         }
 
         /// <summary>
-        /// Pide al usuario el apellido materno. Utiliza la función RequestNonEmptyString() para validar la cadena.
+        /// Pide al usuario el apellido materno. Utiliza la función RequestNonEmptyAlphaString() para validar la cadena.
         /// </summary>
         /// <returns>Un string con el apellido ingresado por el usuario.</returns>
         public static string RequestApellidoMaterno()
         {
-            return RequestNonEmptyString("el apellido materno del alumno", title: "Apellido Materno");
+            return RequestNonEmptyAlphaString("el apellido materno del alumno", title: "Apellido Materno");
         }
 
         /// <summary>
@@ -268,7 +251,15 @@ namespace Utilities
         /// <returns>Un string con la dirección ingresada por el usuario.</returns>
         public static string RequestDireccion()
         {
-            return RequestNonEmptyString("la dirección del alumno", title: "Dirección");
+            return RequestField(
+                lambda: str =>
+                {
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNonConsecutiveSpaces(str);
+
+                    return true;
+                }
+                );
         }
 
         /// <summary>
@@ -280,12 +271,9 @@ namespace Utilities
             return RequestField(
                 lambda: str =>
                 {
-                    //La cadena es numérica.
-                    if (!long.TryParse(str, out long i))
-                        throw new Exception("No puede ingresar caracteres que no sean numéricos.");
-                    //La cadena tiene longitud 10.
-                    if (str.Length != 10)
-                        throw new Exception("Debe ingresar 10 dígitos.");
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNumericString(str);
+                    Validations.ValidateStringLength(str, 10);
 
                     return true;
                 },
@@ -303,15 +291,11 @@ namespace Utilities
             return RequestField(
                 lambda: str =>
                 {
-                    //La cadena contiene @.
-                    if (!str.Contains("@"))
-                        throw new Exception("El correo debe contener '@'.");
-                    //La cadena termina con '.com'.
-                    if (!str.EndsWith(".com"))
-                        throw new Exception("El correo debe terminar con '.com'.");
-                    //La cadena no contiene espacios.
-                    if (str.Contains(" "))
-                        throw new Exception("El correo no debe contener espacios.");
+                    Validations.ValidateStringDoesNotContain(str, " ");
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateStringContains(str, "@");
+                    Validations.ValidateStringEndsWith(str, ".com");
+                    
                     //La cadena ingresada no representa un correo que ya exista en la base de datos.
                     if (new AlumnoSC().GetAllAlumnos().FirstOrDefault(a => a.correo_alumno == str) != null)
                         throw new Exception("El correo ingresado ya está registrado.");
@@ -356,12 +340,9 @@ namespace Utilities
             return int.Parse( RequestField(
                 lambda: str =>
                 {
-                    //La cadena es numérica.
-                    if (!int.TryParse(str, out int semestre))
-                        throw new Exception("Debe ingresar un valor numérico.");
-                    //La cadena está entre 1 y 9.
-                    if (semestre < 1 || semestre > 9)
-                        throw new Exception("Debe ingresar un número entre 1 y 9.");
+                    Validations.ValidateStringStructure(str);
+                    Validations.ValidateNumericString(str);
+                    Validations.ValidateNumberBetween(str, 1, 9);
 
                     return true;
                 },
@@ -371,12 +352,164 @@ namespace Utilities
         }
 
         /// <summary>
-        /// Pide al usuario un nombre completo.  Utiliza la función RequestNonEmptyString() para validar la cadena.
+        /// Pide al usuario ambos apellidos. Utiliza las funciones RequestApellidoPaterno() y RequestApellidoMaterno().
+        /// </summary>
+        /// <returns></returns>
+        public static string RequestApellidos()
+        {
+            string apellidos = "";
+            apellidos += RequestApellidoPaterno();
+            apellidos += " " + RequestApellidoMaterno();
+
+            return apellidos;
+        }
+
+        /// <summary>
+        /// Pide al usuario un nombre completo.  Utiliza la funciones RequestNombe(), RequestApellidoPaterno() y RequestApellidoMaterno().
         /// </summary>
         /// <returns>Un string con el nombre ingresado por el usuario.</returns>
         public static string RequestNombreCompleto()
         {
-            return RequestNonEmptyString("el nombre completo del alumno", "Nombre Completo");
+            string nombreCompleto = "";
+
+            nombreCompleto += RequestNombre();
+            nombreCompleto += " " + RequestApellidos();
+
+            return nombreCompleto;
+        }
+    }
+
+    /// <summary>
+    /// Clase que contiene métodos para validar distintos aspectos de una cadena dada.
+    /// </summary>
+    class Validations
+    {
+        /// <summary>
+        /// Valida que la cadena sea numérica.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        public static void ValidateNumericString(string str)
+        {
+            if (!long.TryParse(str, out long i))
+                throw new Exception("No puede ingresar caracteres que no sean numéricos.");
+        }
+
+        /// <summary>
+        /// Valida que la cadena ingresada tenga la longitud especificada.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        /// <param name="length">Longitud de la cadena.</param>
+        public static void ValidateStringLength(string str, int length)
+        {
+            if (str.Length != length)
+                throw new Exception("La longitud de la matrícula debe ser igual a " + length + ".");
+        }
+
+        /// <summary>
+        /// Valida la estructura básica de una cadena (no empieza ni termina con espacios, no está vacía.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        public static void ValidateStringStructure(string str)
+        {
+            //La cadena no está vacía.
+            if (str.Equals(""))
+                throw new Exception("No puede ingresar una cadena vacía.");
+            //La cadena no empieza con espacios en blanco.
+            if (!str.TrimStart().Equals(str))
+                throw new Exception("La cadena no debe empezar con espacios en blanco.");
+            //La cadena no termina con espacios en blanco.
+            if (!str.TrimEnd().Equals(str))
+                throw new Exception("La cadena no debe terminar con espacios en blanco.");
+        }
+
+        /// <summary>
+        /// Valida que la cadena no tenga espacios consecutivos.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        public static void ValidateNonConsecutiveSpaces(string str)
+        {
+            //La cadena no contiene espacios consecutivos.
+            int cont = 0;
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (cont > 1)
+                    throw new Exception("La cadena no debe contener más de un espacio contiguo.");
+                if (str[i] == ' ')
+                    cont++;
+                else
+                    cont = 0;
+            }
+        }
+
+        /// <summary>
+        /// Valida que la cadena contenga únicamente letras.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        internal static void ValidateAlphaString(string str)
+        {
+            //La cadena únicamente contiene letras.
+            for (int i = 0; i < str.Length; i++)
+            {
+                if (!Char.IsLetter(str[i]))
+                    throw new Exception("No puede ingresar caracteres que no sean letras.");
+            }
+        }
+
+        /// <summary>
+        /// Valida que la cadena sea un número dentro del rango indicado.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        /// <param name="start">Valor mínimo que puede tomar.</param>
+        /// <param name="end">Vaor máximo que puede tomar.</param>
+        internal static void ValidateNumberBetween(string str, int start, int end)
+        {
+            //La cadena es numérica.
+            if(int.TryParse(str, out int number))
+                throw new Exception("No puede ingresar caracteres que no sean numéricos.");
+            //El número está en el rango indicado.
+            if (number < start || number > end)
+                throw new Exception("Debe ingresar un número entre " + start + " y " + end + ".");
+        }
+
+        /// <summary>
+        /// Valida que la cadena contenga la subcadena indicada.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        /// <param name="substring">Subcadena que debe estar contenida en la cadena.</param>
+        internal static void ValidateStringContains(string str, string substring)
+        {
+            //La cadena contiene el string especificado.
+            if (!str.Contains(substring))
+                throw new Exception("El correo debe contener '" + substring + "'.");
+        }
+
+        /// <summary>
+        /// Valida que la cadena termine con una subcadena indicada.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        /// <param name="substring">Subcadena con la que debe terminar la cadena.</param>
+        internal static void ValidateStringEndsWith(string str, string substring)
+        {
+            //La cadena termina con el string indicado.
+            if (!str.EndsWith(substring))
+                throw new Exception("El correo debe terminar con '" + substring + "'.");
+        }
+
+        /// <summary>
+        /// Valida que la cadena no contenga la subcadena indicada.
+        /// </summary>
+        /// <param name="str">Cadena a validar.</param>
+        /// <param name="substring">Subcadena que no debe contener la cadena.</param>
+        internal static void ValidateStringDoesNotContain(string str, string substring)
+        {
+            string label = substring;
+
+            if (label == " ")
+                label = "espacios";
+
+            //La cadena no contiene el string indicado.
+            if (str.Contains(substring))
+                throw new Exception("El correo no debe contener " + label + " .");
         }
     }
 

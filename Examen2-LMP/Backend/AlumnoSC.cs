@@ -52,7 +52,7 @@ namespace Examen2_LMP.Backend
                 return false;
             }
 
-            Format.ShowMessage("Se ha eliminado al alumno con éxito.");
+            Format.ShowMessage("Se han guardado los cambios con éxito.");
             return true;
         }
 

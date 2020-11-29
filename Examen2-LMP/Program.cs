@@ -68,6 +68,7 @@ namespace Examen2_LMP
             string option;                  //Opción ingresada por el usuario
 
             //Inicialización de los campos del alumno.
+            alumno.matricula_alumno = "";
             alumno.nombre_alumno = "";
             alumno.apellido_paterno_alumno = "";
             alumno.apellido_materno_alumno = "";
@@ -238,25 +239,99 @@ namespace Examen2_LMP
                 return;
 
             string option;
+            bool cambios = false;
             do
             {
-                Console.Clear();
-                Console.WriteLine();
-                Format.DrawBox("Menú de Cambios");
-                Console.WriteLine();
-                Format.WriteLine("1. Salir");
-
-                Console.WriteLine();
-                Format.Write("Ingrese una opción: ");
-                option = Console.ReadLine();
-                Console.WriteLine();
-
-                switch (option)
+                do
                 {
-                    case "1": break;
-                    default: Format.ShowMessage("Opción Inválida"); break;
+                    Console.Clear();
+                    Console.WriteLine();
+                    Format.DrawBox("Menú de Cambios");
+                    Console.WriteLine();
+
+                    Format.WriteLine("Datos del Alumno: ");
+                    Console.WriteLine();
+                    Format.WriteLine("Matricula: " + alumno.matricula_alumno);
+                    Format.WriteLine("1. Nombre: " + alumno.nombre_alumno);
+                    Format.WriteLine("2. Apellido Paterno: " + alumno.apellido_paterno_alumno);
+                    Format.WriteLine("3. Apellido Materno: " + alumno.apellido_materno_alumno);
+                    Format.WriteLine("4. Dirección: " + alumno.direccion_alumno);
+                    Format.WriteLine("5. Teléfono: " + alumno.telefono_alumno);
+                    Format.WriteLine("6. Correo: " + alumno.correo_alumno);
+                    Format.WriteLine("7. Carrera: " + alumno.carrera);
+                    Format.WriteLine("8. Semestre: " + alumno.semestre_alumno);
+                    Format.WriteLine("9.  Guardar Cambios");
+                    Format.WriteLine("10.  Salir");
+
+                    Console.WriteLine();
+                    Format.Write("Ingrese una opción a cambiar: ");
+                    option = Console.ReadLine();
+                    Console.WriteLine();
+
+                    Console.Clear();
+
+                    if (int.TryParse(option, out int i))
+                    {
+                        if (i >= 1 && i <= 8)
+                            cambios = true;
+                    }
+
+                    switch (option)
+                    {
+                        case "1":
+                            alumno.nombre_alumno = Requests.RequestNombre(); break;
+                        case "2":
+                            alumno.apellido_paterno_alumno = Requests.RequestApellidoPaterno(); break;
+                        case "3":
+                            alumno.apellido_materno_alumno = Requests.RequestApellidoMaterno(); break;
+                        case "4":
+                            alumno.direccion_alumno = Requests.RequestDireccion(); break;
+                        case "5":
+                            alumno.telefono_alumno = Requests.RequestTelefono(); break;
+                        case "6":
+                            alumno.correo_alumno = Requests.RequestCorreo(); break;
+                        case "7":
+                            alumno.carrera = Requests.RequestCarrera(); break;
+                        case "8":
+                            alumno.semestre_alumno = Requests.RequestSemestre(); break;
+                        case "9": break;
+                        case "10":
+                            if(cambios)
+                            {
+                                string exit = Requests.AskForConfirmation("Se perderán los cambios.", "¿Desea continuar?");
+
+                                if (exit == "S")
+                                    return;
+                            }
+
+                            break;
+                        default: Format.ShowMessage("Opción Inválida"); break;
+                    }
+                } while (option != "9");
+
+                string confirm = Requests.AskForConfirmation(
+                    "---Datos del Alumno---",
+                    "",
+                    "Matrícula: " + alumno.matricula_alumno,
+                    "Nombre: " + alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno,
+                    "Dirección: " + alumno.direccion_alumno,
+                    "Teléfono: " + alumno.telefono_alumno,
+                    "Correo: " + alumno.correo_alumno,
+                    "Carrera: " + alumno.carrera,
+                    "Semestre: " + alumno.semestre_alumno,
+                    "",
+                    "¿Desea sobreescribir estos datos?"
+                    );
+
+                if(confirm == "S")
+                {
+                    if (new AlumnoSC().UpdateAlumno(alumno))
+                        break;
                 }
-            } while (option != "1");
+                else
+                    Format.ShowMessage("No se guardarán los cambios.");
+
+            } while (true);
         }
 
         public static void MenuConsultas()
@@ -275,7 +350,7 @@ namespace Examen2_LMP
                 Format.WriteLine("3. Nombre Completo");
                 Format.WriteLine("4. Carrera");
                 Format.WriteLine("5. Semestre");
-                Format.WriteLine("6. Consulta General");
+                Format.WriteLine("6. Consultar todos los Registros");
                 Format.WriteLine("7. Salir");
 
                 Console.WriteLine();
@@ -294,9 +369,7 @@ namespace Examen2_LMP
 
                         break;
                     case "2":
-                        string apellidoPaterno = Requests.RequestApellidoPaterno();
-                        string apellidoMaterno = Requests.RequestApellidoMaterno();
-                        string apellidos = apellidoPaterno + " " + apellidoMaterno;
+                        string apellidos = Requests.RequestApellidos();
 
                         students = new AlumnoSC().GetAlumnosByApellido(apellidos).ToList();
 
@@ -361,7 +434,10 @@ namespace Examen2_LMP
             } while (true);
         }
 
-        //Regresa una lista de alumnos, ya sea por nombre o por matrícula. Si se selecciona la opción de salir regresa null.
+        /// <summary>
+        /// Obtiene una lista de alumnos que coincidan con el nombre o la matrícula indicado por el usuario.
+        /// </summary>
+        /// <returns>Un objeto List&lt;Alumno&gt; con los alumnos que coincidan con los parámetros de búsqueda o null si se selecciona la opción "Salir".</returns>
         public static List<Alumno> GetListOfAlumnos()
         {
             List<Alumno> alumnos;
