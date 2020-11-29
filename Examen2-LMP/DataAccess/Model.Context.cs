@@ -16,7 +16,7 @@ namespace Examen2_LMP.DataAccess
     public partial class LMPEntities : DbContext
     {
         public LMPEntities()
-            : base("name=Entities")
+            : base("name=LMPEntities")
         {
         }
     
