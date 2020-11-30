@@ -142,24 +142,27 @@ namespace Examen2_LMP.Backend
         {
             string[] carreras = { "LCC", "LSTI", "LM", "LF", "LMAD", "LA" };
             Alumno alumno = new Alumno();
+            Random rand = new Random();
 
             do
             {
-                alumno.matricula_alumno = Other.RandomNumber(7).ToString();
+                alumno.matricula_alumno = Other.RandomNumber(7);
 
                 if (new AlumnoSC().GetAlumnoByMatricula(alumno.matricula_alumno) == null)
                     break;
             } while (true);
-            alumno.nombre_alumno = "Nombre" + Other.RandomNumber();
-            alumno.apellido_paterno_alumno = "ApellidoPaterno" + Other.RandomNumber();
-            alumno.apellido_materno_alumno = "ApellidoMaterno" + Other.RandomNumber();
-            alumno.direccion_alumno = "Dirección" + Other.RandomNumber();
-            alumno.telefono_alumno = Other.RandomNumber(10).ToString();
+            alumno.nombre_alumno = "Nombre" + Other.RandomString();
+            alumno.apellido_paterno_alumno = "ApellidoPaterno" + Other.RandomString();
+            alumno.apellido_materno_alumno = "ApellidoMaterno" + Other.RandomString();
+            alumno.direccion_alumno = "Dirección" + Other.RandomString();
+            alumno.telefono_alumno = Other.RandomNumber(10);
             do
             {
                 string correo = "";
+                correo += Other.RandomString();
                 correo += Other.RandomNumber();
                 correo += "@";
+                correo += Other.RandomString();
                 correo += Other.RandomNumber();
                 correo += ".com";
 
@@ -169,8 +172,8 @@ namespace Examen2_LMP.Backend
                     break;
                 }
             } while (true);
-            alumno.carrera = carreras[ new Random().Next(6) ];
-            alumno.semestre_alumno = (int)Other.RandomNumber(1) + 1;
+            alumno.carrera = carreras[ rand.Next(6) ];
+            alumno.semestre_alumno = rand.Next(9) + 1;
 
             return alumno;
         }

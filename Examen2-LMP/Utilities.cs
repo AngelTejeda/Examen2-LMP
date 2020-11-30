@@ -517,19 +517,34 @@ namespace Utilities
         /// </summary>
         /// <param name="digits">Parámetro opcional que indica cuántos dígitos debe tener el número generado. Si el parámetro no se define el número de dígitos es aleatorio.</param>
         /// <returns>Un entero long con el número generado.</returns>
-        public static long RandomNumber(int digits = 0)
+        public static string RandomNumber(int digits = 0)
         {
             Random rand = new Random(Guid.NewGuid().GetHashCode());
 
             string number = "";
 
-            if(digits == 0)
+            if(digits <= 0)
                 digits = rand.Next(1, 11);
 
             for(int i=0; i<digits; i++)
                 number += rand.Next(0, 10);
 
-            return long.Parse(number);
+            return number;
+        }
+
+        public static string RandomString(int length = 0)
+        {
+            Random rand = new Random(Guid.NewGuid().GetHashCode());
+
+            string str = "";
+
+            if (length <= 0)
+                length = rand.Next(1, 11);
+
+            for (int i = 0; i < length; i++)
+                str += (char)rand.Next(97, 123);
+
+            return str;
         }
     }
 }

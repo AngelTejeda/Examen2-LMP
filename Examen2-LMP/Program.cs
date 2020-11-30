@@ -170,6 +170,7 @@ namespace Examen2_LMP
 
                             //Si confirma el registro
                             if(confirm == "S") {
+                                Console.Clear();
                                 Console.WriteLine();
                                 //Si el alumno se registra con éxito
                                 if(new AlumnoSC().AddAlumno(alumno))
@@ -223,6 +224,8 @@ namespace Examen2_LMP
 
                 if (option == "S")
                 {
+                    Console.Clear();
+                    Console.WriteLine();
                     if (new AlumnoSC().RemoveAlumno(alumno))
                         option = "N";
                 }
@@ -325,6 +328,8 @@ namespace Examen2_LMP
 
                 if(confirm == "S")
                 {
+                    Console.Clear();
+                    Console.WriteLine();
                     if (new AlumnoSC().UpdateAlumno(alumno))
                         break;
                 }
