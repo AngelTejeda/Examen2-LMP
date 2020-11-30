@@ -398,7 +398,7 @@ namespace Examen2_LMP
 
                         break;
                     case "6":
-                        students = new AlumnoSC().GetAllAlumnos().ToList();
+                        students = new AlumnoSC().GetAllAlumnos().OrderBy(a => a.nombre_alumno).ToList();
 
                         break;
                     case "7": return;
