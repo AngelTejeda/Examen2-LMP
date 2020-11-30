@@ -299,13 +299,15 @@ namespace Examen2_LMP
                             alumno.semestre_alumno = Requests.RequestSemestre(); break;
                         case "9": break;
                         case "10":
-                            if(cambios)
+                            if (cambios)
                             {
                                 string exit = Requests.AskForConfirmation("Se perderán los cambios.", "¿Desea continuar?");
 
                                 if (exit == "S")
                                     return;
                             }
+                            else
+                                return;
 
                             break;
                         default: Format.ShowMessage("Opción Inválida"); break;
