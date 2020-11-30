@@ -397,39 +397,45 @@ namespace Examen2_LMP
 
                         break;
                     case "7": return;
-                    default: Format.ShowMessage("Opción Inválida"); break;
+                    default:
+                        Format.ShowMessage("Opción Inválida");
+                        students = null;
+                        break;
                 }
 
-                if (students.Count != 0)
+                if(students != null)
                 {
-                    Alumno alumno = SelectAlumnoFromList(students);
-
-                    if (alumno != null)
+                    if (students.Count != 0)
                     {
-                        Console.Clear();
-                        Console.WriteLine();
-                        Format.ShowMessage(
-                            "---Datos del Alumno---",
-                            "",
-                            "Matrícula: " + alumno.matricula_alumno,
-                            "Nombre: " + alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno,
-                            "Dirección: " + alumno.direccion_alumno,
-                            "Teléfono: " + alumno.telefono_alumno,
-                            "Correo: " + alumno.correo_alumno,
-                            "Carrera: " + alumno.carrera,
-                            "Semestre: " + alumno.semestre_alumno
-                            );
-                    }
-                }
-                else
-                {
-                    string confirm = Requests.AskForConfirmation(
-                    "No se han encontrado alumnos.",
-                    "¿Desea realizar otra consulta?"
-                    );
+                        Alumno alumno = SelectAlumnoFromList(students);
 
-                    if (confirm.Equals("N"))
-                        return;
+                        if (alumno != null)
+                        {
+                            Console.Clear();
+                            Console.WriteLine();
+                            Format.ShowMessage(
+                                "---Datos del Alumno---",
+                                "",
+                                "Matrícula: " + alumno.matricula_alumno,
+                                "Nombre: " + alumno.nombre_alumno + " " + alumno.apellido_paterno_alumno + " " + alumno.apellido_materno_alumno,
+                                "Dirección: " + alumno.direccion_alumno,
+                                "Teléfono: " + alumno.telefono_alumno,
+                                "Correo: " + alumno.correo_alumno,
+                                "Carrera: " + alumno.carrera,
+                                "Semestre: " + alumno.semestre_alumno
+                                );
+                        }
+                    }
+                    else
+                    {
+                        string confirm = Requests.AskForConfirmation(
+                        "No se han encontrado alumnos.",
+                        "¿Desea realizar otra consulta?"
+                        );
+
+                        if (confirm.Equals("N"))
+                            return;
+                    }
                 }
             } while (true);
         }

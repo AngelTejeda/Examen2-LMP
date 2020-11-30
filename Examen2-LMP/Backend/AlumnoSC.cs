@@ -68,12 +68,12 @@ namespace Examen2_LMP.Backend
             }
             catch (Exception e)
             {
-                Format.ShowMessage("Se ha producido un error. No se ha podido actualizar al alumno.", "Error: " + e.Message);
+                Format.ShowMessage("Se ha producido un error. No se han podido actualizar los datos del alumno.", "Error: " + e.Message);
 
                 return false;
             }
 
-            Format.ShowMessage("Se ha eliminado al alumno con éxito.");
+            Format.ShowMessage("Se han acutalizado los datos del alumno con éxito.");
             return true;
         }
 
