@@ -258,7 +258,9 @@ namespace Utilities
                     Validations.ValidateNonConsecutiveSpaces(str);
 
                     return true;
-                }
+                },
+                title: "Dirección: ",
+                "Ingrese la dirección del alumno: "
                 );
         }
 
@@ -450,8 +452,8 @@ namespace Utilities
             //La cadena únicamente contiene letras.
             for (int i = 0; i < str.Length; i++)
             {
-                if (!Char.IsLetter(str[i]))
-                    throw new Exception("No puede ingresar caracteres que no sean letras.");
+                if (!Char.IsLetter(str[i]) && !str[i].Equals(" "))
+                    throw new Exception("No puede ingresar caracteres que no sean letras o espacios.");
             }
         }
 
