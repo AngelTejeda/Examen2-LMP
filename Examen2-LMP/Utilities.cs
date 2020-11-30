@@ -430,7 +430,6 @@ namespace Utilities
         /// <param name="str">Cadena a validar.</param>
         public static void ValidateNonConsecutiveSpaces(string str)
         {
-            //La cadena no contiene espacios consecutivos.
             int cont = 0;
             for (int i = 0; i < str.Length; i++)
             {
@@ -449,10 +448,9 @@ namespace Utilities
         /// <param name="str">Cadena a validar.</param>
         internal static void ValidateAlphaString(string str)
         {
-            //La cadena únicamente contiene letras.
             for (int i = 0; i < str.Length; i++)
             {
-                if (!Char.IsLetter(str[i]) && !str[i].Equals(" "))
+                if (!Char.IsLetter(str[i]) && str[i] != ' ')
                     throw new Exception("No puede ingresar caracteres que no sean letras o espacios.");
             }
         }
@@ -466,7 +464,7 @@ namespace Utilities
         internal static void ValidateNumberBetween(string str, int start, int end)
         {
             //La cadena es numérica.
-            if(int.TryParse(str, out int number))
+            if(!int.TryParse(str, out int number))
                 throw new Exception("No puede ingresar caracteres que no sean numéricos.");
             //El número está en el rango indicado.
             if (number < start || number > end)
@@ -480,7 +478,6 @@ namespace Utilities
         /// <param name="substring">Subcadena que debe estar contenida en la cadena.</param>
         internal static void ValidateStringContains(string str, string substring)
         {
-            //La cadena contiene el string especificado.
             if (!str.Contains(substring))
                 throw new Exception("El correo debe contener '" + substring + "'.");
         }
@@ -492,7 +489,6 @@ namespace Utilities
         /// <param name="substring">Subcadena con la que debe terminar la cadena.</param>
         internal static void ValidateStringEndsWith(string str, string substring)
         {
-            //La cadena termina con el string indicado.
             if (!str.EndsWith(substring))
                 throw new Exception("El correo debe terminar con '" + substring + "'.");
         }
@@ -509,7 +505,6 @@ namespace Utilities
             if (label == " ")
                 label = "espacios";
 
-            //La cadena no contiene el string indicado.
             if (str.Contains(substring))
                 throw new Exception("El correo no debe contener " + label + " .");
         }
